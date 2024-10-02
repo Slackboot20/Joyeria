@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { View, Text, StyleSheet} from 'react-native'
+import ButtonsRadians from '../components/ButtonsRadians';
 
-export default function Noseque(){
+
+export default function Noseque({navigation}){
     return(
         <View style ={styles.container}>
-            <Text style = {styles.title}>Pantalla de noseque</Text>
+            <Text style = {styles.title}>Crear Joyas</Text>
+            <ButtonsRadians 
+            text="Crear Joyas"
+            onPres={() => navigation.navigate('FormJoya')}/>
         </View>
     )
 }

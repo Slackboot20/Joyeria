@@ -4,7 +4,7 @@ import { View, Text, StyleSheet} from 'react-native'
 export default function Joyas(){
     return(
         <View style ={styles.container}>
-            <Text style = {styles.title}>Pantalla de joyas</Text>
+            <Text style = {styles.title}>Ver Mis Joyas</Text>
         </View>
     )
 }

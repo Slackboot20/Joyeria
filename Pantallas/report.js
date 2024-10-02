@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { View, Text, StyleSheet} from 'react-native'
+import ButtonsRadians from '../components/ButtonsRadians';
 
-export default function Report(){
+export default function Report({navigation}){
     return(
         <View style ={styles.container}>
-            <Text style = {styles.title}>Pantalla de reporte</Text>
+            <Text style = {styles.title}>Movimientos</Text>
+            <ButtonsRadians 
+            text="Crear"
+            onPres={() => navigation.navigate('FormMovemt')}/>
         </View>
     )
 }
