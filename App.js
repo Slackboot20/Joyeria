@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import TabsNavigations from './navigations/TabsNavigations';
 import FormJoya from './Pantallas/FormJoya';
 import FormMovemt from './Pantallas/FormMovemt';
+import Header from './components/Header';
 
 
 const Stack = createStackNavigator();
@@ -14,6 +15,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
       <NavigationContainer>
+        <Header/>
         <Stack.Navigator initialRouteName="InicializerApp">
           <Stack.Screen
             name="InicalizerApp" 
