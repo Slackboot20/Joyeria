@@ -27,6 +27,7 @@ export default function Profile({ navigation }) {
         <View style={styles.container}>
             <Text style={styles.title}>Profile</Text>
             <ButtonsRadians
+                buttonStyle={styles.logoutButton}
                 text="Cerrar Sesión"
                 onPres={handleLogout}
             />
@@ -43,5 +44,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         padding: 50,
-    }
+    },
+    logoutButton: {
+        backgroundColor: '#FF0000',
+    },
 });
