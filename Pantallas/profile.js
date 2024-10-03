@@ -1,12 +1,37 @@
 import * as React from 'react';
-import { View, Text, StyleSheet} from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import ButtonsRadians from '../components/ButtonsRadians';
 
-export default function Profile(){
-    return(
-        <View style ={styles.container}>
-            <Text style = {styles.title}>Profile</Text>
+export default function Profile({ navigation }) {
+    const handleLogout = () => {
+        Alert.alert(
+            "Cerrar sesión",
+            "¿Estás seguro de que deseas cerrar sesión?",
+            [
+                {
+                    text: "Cancelar",
+                    onPress: () => console.log("Cancelado"),
+                    style: "cancel"
+                },
+                {
+                    text: "Cerrar sesión",
+                    onPress: () => {
+                        navigation.navigate('InicalizerApp');
+                    }
+                }
+            ]
+        );
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Profile</Text>
+            <ButtonsRadians
+                text="Cerrar Sesión"
+                onPres={handleLogout}
+            />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -19,4 +44,4 @@ const styles = StyleSheet.create({
         fontSize: 24,
         padding: 50,
     }
-})
+});
