@@ -16,7 +16,7 @@ export default function Profile({ navigation }) {
                 {
                     text: "Cerrar sesión",
                     onPress: () => {
-                        navigation.navigate('InicalizerApp');
+                        navigation.navigate('InicializerApp');
                     }
                 }
             ]
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
         padding: 50,
     },
     logoutButton: {
-        backgroundColor: '#FF0000',
+        backgroundColor: "red",
     },
 });

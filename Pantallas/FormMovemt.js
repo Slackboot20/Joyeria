@@ -6,6 +6,7 @@ export default function FormMovemt(){
     return (
         <View>
             <Text style={styles.textoPredeterminado} >Formulário de Movimientos</Text>
+            
         </View>
 
     );

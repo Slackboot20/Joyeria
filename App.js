@@ -18,8 +18,9 @@ export default function App() {
         <Header/>
         <Stack.Navigator initialRouteName="InicializerApp">
           <Stack.Screen
-            name="InicalizerApp" 
+            name="InicializerApp" 
             component={InicializerApp}
+            options={{ headerShown: false }}
           />
           <Stack.Screen 
           name="Tabs"

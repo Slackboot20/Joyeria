@@ -12,7 +12,8 @@ export default function InicializerApp({navigation}){
         <View>
             <Buttons 
             text="Iniciar"
-            onPres={() => navigation.navigate('Tabs')} />
+            onPres={() => navigation.navigate('Tabs')} 
+            />
         </View>
         </ImageBackground>
     )

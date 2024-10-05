@@ -3,7 +3,7 @@ import { View, Text, StyleSheet} from 'react-native'
 import ButtonsRadians from '../components/ButtonsRadians';
 
 
-export default function Noseque({navigation}){
+export default function CrearJoya({navigation}){
     return(
         <View style ={styles.container}>
             <Text style = {styles.title}>Crear Joyas</Text>
