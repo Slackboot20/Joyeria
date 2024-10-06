@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { View, Text, StyleSheet} from 'react-native'
+import ButtonsRadians from '../components/ButtonsRadians';
 
-
-export default function FormMovemt(){
+export default function FormMovemt({navigation}){
     return (
         <View>
             <Text style={styles.textoPredeterminado} >Formulário de Movimientos</Text>
-            
+            <ButtonsRadians
+            text = 'Volver'
+            onPres = {() => navigation.goBack()}/>
         </View>
 
     );

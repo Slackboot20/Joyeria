@@ -1,8 +1,7 @@
 import  React from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import InicializerApp from './Pantallas/InicalizerApp';
-import { View } from 'react-native';
+import InicializerApp from './Pantallas/InicializerApp';
 import TabsNavigations from './navigations/TabsNavigations';
 import FormJoya from './Pantallas/FormJoya';
 import FormMovemt from './Pantallas/FormMovemt';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ImageBackground} from 'react-native'
+import { View, StyleSheet, ImageBackground} from 'react-native'
 import Buttons from '../components/Buttons';
 
 export default function InicializerApp({navigation}){

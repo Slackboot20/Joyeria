@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { View, Text, StyleSheet} from 'react-native'
-// import './estilos/Default.css';
+import ButtonsRadians from '../components/ButtonsRadians';
 
 
-export default function FormJoya(){
+export default function FormJoya({navigation}){
     return (
         <View>
-            <Text style={styles.textoPredeterminado} >Formulário de Joya</Text>
+            <Text style={styles.textoPredeterminado} >Formulario de Joya</Text>
+            <ButtonsRadians
+            text = 'Volver'
+            onPres = {() => navigation.goBack()}/>
         </View>
-
+        
     );
 };
 
