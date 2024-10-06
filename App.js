@@ -39,7 +39,7 @@ export default function App() {
             options={{
               title: 'Volver', // Cambia el texto del encabezado
               headerTintColor: '#FFFFFF', // Cambia el color del texto del header
-              headerStyle: { backgroundColor: 'peru' }, // Cambia el color de fondo del header
+              headerStyle: { backgroundColor: 'green' }, // Cambia el color de fondo del header
             }}
           />
         </Stack.Navigator>
