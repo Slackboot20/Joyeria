@@ -6,9 +6,6 @@ export default function FormMovemt({navigation}){
     return (
         <View>
             <Text style={styles.textoPredeterminado} >Formulário de Movimientos</Text>
-            <ButtonsRadians
-            text = 'Volver'
-            onPres = {() => navigation.goBack()}/>
         </View>
 
     );
