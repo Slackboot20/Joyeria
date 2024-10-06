@@ -6,7 +6,6 @@ import { View } from 'react-native';
 import TabsNavigations from './navigations/TabsNavigations';
 import FormJoya from './Pantallas/FormJoya';
 import FormMovemt from './Pantallas/FormMovemt';
-import Header from './components/Header';
 
 
 const Stack = createStackNavigator();
@@ -15,7 +14,6 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
       <NavigationContainer>
-        <Header/>
         <Stack.Navigator initialRouteName="InicializerApp">
           <Stack.Screen
             name="InicializerApp" 
@@ -30,6 +28,11 @@ export default function App() {
           <Stack.Screen
             name="FormJoya"
             component={FormJoya}
+            options={{
+              title: 'Inicio', // Cambia el texto del encabezado
+              headerTintColor: '#FFFFFF', // Cambia el color del texto del header
+              headerStyle: { backgroundColor: 'peru' }, // Cambia el color de fondo del header
+            }}
           />
           <Stack.Screen
             name="FormMovemt"

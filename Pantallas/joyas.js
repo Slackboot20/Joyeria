@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     title: {
+        fontFamily: 'serif',
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 24,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
-import ButtonsRadians from '../components/ButtonsRadians';
+import Buttons from '../components/Buttons';
 
 export default function Profile({ navigation }) {
     const handleLogout = () => {
@@ -26,7 +26,7 @@ export default function Profile({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Profile</Text>
-            <ButtonsRadians
+            <Buttons
                 buttonStyle={styles.logoutButton}
                 text="Cerrar Sesión"
                 onPres={handleLogout}
@@ -40,12 +40,13 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     title: {
+        fontFamily: 'serif',
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 24,
         padding: 50,
     },
     logoutButton: {
-        backgroundColor: "red",
+        backgroundColor: 'saddlebrown',
     },
 });

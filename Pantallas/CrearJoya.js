@@ -12,13 +12,14 @@ export default function CrearJoya({navigation}){
             onPres={() => navigation.navigate('FormJoya')}/>
         </View>
     )
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         padding: 16,
     },
     title: {
+        fontFamily: 'serif',
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 24,
