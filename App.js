@@ -28,7 +28,7 @@ export default function App() {
             name="FormJoya"
             component={FormJoya}
             options={{
-              title: 'Inicio', // Cambia el texto del encabezado
+              title: 'Volver', // Cambia el texto del encabezado
               headerTintColor: '#FFFFFF', // Cambia el color del texto del header
               headerStyle: { backgroundColor: 'peru' }, // Cambia el color de fondo del header
             }}
@@ -36,6 +36,11 @@ export default function App() {
           <Stack.Screen
             name="FormMovemt"
             component={FormMovemt}
+            options={{
+              title: 'Volver', // Cambia el texto del encabezado
+              headerTintColor: '#FFFFFF', // Cambia el color del texto del header
+              headerStyle: { backgroundColor: 'peru' }, // Cambia el color de fondo del header
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>
