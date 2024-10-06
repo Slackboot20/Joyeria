@@ -6,14 +6,12 @@ import CrearJoya from '../Pantallas/CrearJoya';
 import Profile from '../Pantallas/Profile';
 import Report from '../Pantallas/Report';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Header from '../components/Header'; // Asegúrate de importar el Header
 
 const Tab = createBottomTabNavigator();
 
 const TabsNavigations = () => {
   return (
     <View style={{ flex: 1 }}>
-      <Header /> 
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
