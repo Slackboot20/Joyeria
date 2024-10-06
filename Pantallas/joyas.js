@@ -6,9 +6,7 @@ export default function Joyas(){
     return(
         <View style ={styles.container}>
             <Text style = {styles.title}>Ver Mis Joyas</Text>
-
-            <CardJewelry></CardJewelry>
-
+            <CardJewelry/>
         </View>
     )
 }

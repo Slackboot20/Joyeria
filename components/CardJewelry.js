@@ -7,7 +7,7 @@ const CardJewelry = () => {
     return (
         <View>
             <Card>
-                <Card.Title title="Jewelrys" subtitle="Jewelrys" />
+                <Card.Title  title="Jewelrys" subtitle="Jewelrys" />
             </Card>
         </View>
     )
