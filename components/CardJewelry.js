@@ -2,52 +2,39 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 
-const CardJewelry = () => {
-  const jewel = [
-    {
-      codProduct: '01',
-      description: 'Anillo de Oro entorchado con una piedra preciosa',
-      peso: '10 gramos',
-      material: 'Oro',
-      precioInicial: '500.000',
-      precioFinal: '600.000',
-      provedor: 'Ecopetrol',
-    },
-    {
-      codProduct: '02',
-      description: 'Anillo de Plata entorchado con una piedra preciosa',
-      peso: '20 gramos',
-      material: 'Plata',
-      precioInicial: '100.000',
-      precioFinal: '150.000',
-      provedor: 'Ecopetrol',
-    },
-  ];
-
+const CardJewelry = ({description}) => {
   return (
-    <View style={styles.container}>
-      {jewel.map((item, index) => (
-        <Card key={index} style={styles.card}>
-          <Card.Title title={`Joya ${item.codProduct}`} subtitle={item.description} />
-          <Card.Content>
-            <Paragraph>Peso: {item.peso}</Paragraph>
-            <Paragraph>Material: {item.material}</Paragraph>
-            <Paragraph>Precio Inicial: {item.precioInicial}</Paragraph>
-            <Paragraph>Precio Final: {item.precioFinal}</Paragraph>
-            <Paragraph>Proveedor: {item.provedor}</Paragraph>
-          </Card.Content>
-        </Card>
-      ))}
+    <View style={styles.card}>
+        <Text style={styles.name}>{description}</Text>
+        <Text style={styles.name}>{description}</Text>
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
   card: {
+    width: 170,  // Smaller card width
+    marginRight: 15,  // Adds space between cards in horizontal scroll
+    backgroundColor: 'peachpuff',
+    borderRadius: 10,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,  // Adds shadow on Android
     marginBottom: 10,
+
+  },
+  container: {
+    padding: 16,
+  },
+  name: {
+    padding: 10,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#000000',
   },
 });
 

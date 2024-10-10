@@ -1,5 +1,4 @@
-export default function jewelry() {
-const jewel = [
+export const jewel = [
         {
             codProduct: '01',
             description: 'Anillo de Oro entorchado con una piedra preciosa',
@@ -19,4 +18,4 @@ const jewel = [
             provedor: 'Ecopetrol'
         }
     ];
-    }
+    
