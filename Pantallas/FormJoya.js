@@ -4,7 +4,7 @@ import { View, Text, StyleSheet} from 'react-native'
 export default function FormJoya(){
     return (
         <View>
-            <Text style={styles.textoPredeterminado} >Formulario de Joya</Text>
+            <Text style={styles.textoPredeterminado} >Formulario de Joyas</Text>
         </View>
     );
 };
