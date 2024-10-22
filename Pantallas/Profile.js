@@ -28,10 +28,29 @@ export default function Profile({ navigation }) {
         <View style={style.containerTabs}>
             <Text style={style.titleTabs}>Profile</Text>
             <Buttons
+<<<<<<< HEAD
                 buttonStyle={style.logoutButton}
+=======
+>>>>>>> b1a5d5f91fcc123d0171653c24e660a8256c8493
                 text="Cerrar Sesión"
                 onPres={handleLogout}
             />
         </View>
     );
 }
+<<<<<<< HEAD
+=======
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+    },
+    title: {
+        fontFamily: 'serif',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 24,
+        padding: 50,
+    },
+});
+>>>>>>> b1a5d5f91fcc123d0171653c24e660a8256c8493
