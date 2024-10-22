@@ -21,23 +21,6 @@ export default function InicializerApp({ navigation }) {
 
     return (
         <ImageBackground
-<<<<<<< HEAD
-        source={require('../assets/opcion3.jpeg')}
-        title={style.titleStart}
-        style={style.backgroundStart}
-        imageStyle={style.backgroundimageStart}
-        >
-        <View style={style.containerStart}>
-            <Buttons 
-            style= {style.buttonCustomsStart}
-            text="Iniciar"
-            onPres={() => navigation.navigate('Tabs')} 
-            />
-        </View>
-        </ImageBackground>
-    )
-}
-=======
             source={require('../assets/opcion4.jpeg')}
             title={styles.title}
             style={styles.background}
@@ -181,4 +164,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
->>>>>>> b1a5d5f91fcc123d0171653c24e660a8256c8493
