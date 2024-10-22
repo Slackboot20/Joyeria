@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { View, StyleSheet, ImageBackground} from 'react-native'
+import { View, StyleSheet, ImageBackground, Text, TextInput} from 'react-native'
 import Buttons from '../components/Buttons';
+import globalStyles from '../styles/globalStyles';
+
 
 export default function InicializerApp({navigation}){
     return(
@@ -11,11 +13,21 @@ export default function InicializerApp({navigation}){
         imageStyle={styles.backgroundimage}
         >
         <View style={styles.container}>
+            <Text style={globalStyles.card}> 
+                Iniciar
+            </Text>
+            <TextInput style={globalStyles.card}>
+                Cedula
+            </TextInput>
+            <TextInput style={globalStyles.card}>
+                Contraseña
+            </TextInput>
             <Buttons 
             style= {styles.buttonCustoms}
             text="Iniciar"
             onPres={() => navigation.navigate('Tabs')} 
             />
+            
         </View>
         </ImageBackground>
     )
@@ -44,6 +56,5 @@ const styles = StyleSheet.create({
     buttonCustoms:{
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    
-})
+    },    
+});

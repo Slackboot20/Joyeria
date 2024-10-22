@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
 
 const CardJewelry = ({description}) => {
   return (

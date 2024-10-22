@@ -47,6 +47,6 @@ const styles = StyleSheet.create({
         padding: 50,
     },
     logoutButton: {
-        backgroundColor: 'saddlebrown',
+        backgroundColor: 'crimson',
     },
 });
