@@ -1,25 +1,13 @@
 import * as React from 'react';
 import { View, Text, StyleSheet} from 'react-native'
 import CardJewelry from '../components/CardJewelry';
+import style from '../Styles/style'
 
 export default function Joyas(){
     return(
-        <View style ={styles.container}>
-            <Text style = {styles.title}>Ver Mis Joyas</Text>
+        <View style ={style.containerTabs}>
+            <Text style = {style.titleTabs}>Ver Mis Joyas</Text>
             <CardJewelry/>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-    },
-    title: {
-        fontFamily: 'serif',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 24,
-        padding: 50,
-    }
-})

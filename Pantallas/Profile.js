@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import Buttons from '../components/Buttons';
+import style from '../Styles/style';
 
 export default function Profile({ navigation }) {
     const handleLogout = () => {
@@ -24,29 +25,13 @@ export default function Profile({ navigation }) {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Profile</Text>
+        <View style={style.containerTabs}>
+            <Text style={style.titleTabs}>Profile</Text>
             <Buttons
-                buttonStyle={styles.logoutButton}
+                buttonStyle={style.logoutButton}
                 text="Cerrar Sesión"
                 onPres={handleLogout}
             />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-    },
-    title: {
-        fontFamily: 'serif',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 24,
-        padding: 50,
-    },
-    logoutButton: {
-        backgroundColor: 'saddlebrown',
-    },
-});
