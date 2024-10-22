@@ -6,12 +6,10 @@ export default function Report({ navigation }) {
     return (
         <View style={styles.container} >
             <Text style={styles.title}>Movimientos</Text>
-            <TouchableOpacity 
-                style={styles.bubble}
-                onPress={() => navigation.navigate('FormMovemt')}
-            >
-                <Text style={styles.bubbleText}>+</Text>
-            </TouchableOpacity>
+            <ButtonsRadians 
+            routename='FormMovemt'
+            text="Crear Joyas"
+            />
            
         </View>
     )

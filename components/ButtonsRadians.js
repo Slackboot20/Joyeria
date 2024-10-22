@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Importa el hook
 
-const ButtonsRadians = () => {
+const ButtonsRadians = ({routename}) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity 
       style={styles.bubble}
-      onPress={() => navigation.navigate('FormMovemt')}
+      onPress={() => navigation.navigate(routename)}
     >
       <Text style={styles.bubbleText}>+</Text>
     </TouchableOpacity>

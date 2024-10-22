@@ -5,6 +5,7 @@ export default function FormJoya(){
     return (
         <View>
             <Text style={styles.textoPredeterminado} >Formulario de Joyas</Text>
+            <Text style={styles.textoPredeterminado} >KHVBDJYHVUDJDJH</Text>
         </View>
     );
 };

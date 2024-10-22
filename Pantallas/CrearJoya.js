@@ -8,8 +8,9 @@ export default function CrearJoya({navigation}){
         <View style ={styles.container}>
             <Text style = {styles.title}>Crear Joyas</Text>
             <ButtonsRadians 
+            routename='FormJoya'
             text="Crear Joyas"
-            onPres={() => navigation.navigate('FormJoya')}/>
+            />
         </View>
     )
 };
