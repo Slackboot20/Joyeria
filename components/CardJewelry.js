@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
+import axios from 'axios';
 
 const CardJewelry = () => {
   const jewel = [

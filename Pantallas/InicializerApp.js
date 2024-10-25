@@ -1,18 +1,40 @@
-import { useState } from 'react';
-import { View, StyleSheet, ImageBackground, Text, TextInput, TouchableOpacity } from 'react-native'
+import { useState, useContext } from 'react';
+import { View, StyleSheet, ImageBackground, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import Buttons from '../components/Buttons';
 import style from '../Styles/style'
+import { login } from '../utils/auth'; // Importar la utilidad de autenticación
+import { AuthContext } from '../context/auth-context'; // importamos el contexto de autenticacion
+
 
 export default function InicializerApp({ navigation }) {
-    const [isLogin, setIsLogin] = useState(true);
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const authCtx = useContext(AuthContext); // Usar el contexto de autenticación. con esta linea carga el contexto de autenticacion
+
+    const [isLogin, setIsLogin] = useState(true);
     const [fullName, setFullName] = useState('');
     const [cedula, setCedula] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
 
-    const handleLogin = () => {
-        navigation.navigate('Tabs');
+    async function handleLogin  ()  {
+        if (!email || !password) {
+            // si no hay email o password mostramos un alerta
+            Alert.alert('Error', 'Please enter both email and password', [{ text: 'OK' }]);
+            return;
+          }
+      
+          try {
+            const token = await login(email, password); // llamamos la utilidad de autenticacion
+            // si esta autenticacion tiene exito devuelve un token. El que devuelve esto es firebase
+            //el cual le pasamos al contexto
+      
+            authCtx.login(token); // el token se pasa al contexto de autenticacion y lo cargamos con la funcion de login
+            // (por dentro de un setAuthToken(token))
+      
+            navigation.navigate('Tabs'); //si todo sale bien navegamos a la pantalla de MainTabs
+          } catch (error) {
+            Alert.alert('Error', 'Login failed. Please try again.');
+          }
     };
 
     const handleRegister = () => {
@@ -34,8 +56,8 @@ export default function InicializerApp({ navigation }) {
                             <TextInput
                                 style={styles.input}
                                 placeholder="Nombre de Usuario"
-                                value={username}
-                                onChangeText={setUsername}
+                                value={email}
+                                onChangeText={setEmail}
                             />
                             <TextInput
                                 style={styles.input}
