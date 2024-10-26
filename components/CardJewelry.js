@@ -1,54 +1,73 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
-import axios from 'axios';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { Card, Paragraph } from 'react-native-paper';
 
-const CardJewelry = () => {
-  const jewel = [
-    {
-      codProduct: '01',
-      description: 'Anillo de Oro entorchado con una piedra preciosa',
-      peso: '10 gramos',
-      material: 'Oro',
-      precioInicial: '500.000',
-      precioFinal: '600.000',
-      provedor: 'Ecopetrol',
-    },
-    {
-      codProduct: '02',
-      description: 'Anillo de Plata entorchado con una piedra preciosa',
-      peso: '20 gramos',
-      material: 'Plata',
-      precioInicial: '100.000',
-      precioFinal: '150.000',
-      provedor: 'Ecopetrol',
-    },
-  ];
+const CardJewelry = ({codigo_Product, description, material}) => {
 
-  return (
-    <View style={styles.container}>
-      {jewel.map((item, index) => (
-        <Card key={index} style={styles.card}>
-          <Card.Title title={`Joya ${item.codProduct}`} subtitle={item.description} />
-          <Card.Content>
-            <Paragraph>Peso: {item.peso}</Paragraph>
-            <Paragraph>Material: {item.material}</Paragraph>
-            <Paragraph>Precio Inicial: {item.precioInicial}</Paragraph>
-            <Paragraph>Precio Final: {item.precioFinal}</Paragraph>
-            <Paragraph>Proveedor: {item.provedor}</Paragraph>
-          </Card.Content>
-        </Card>
-      ))}
+  return ( 
+    <SafeAreaView>
+        <View style={styles.card}>
+      {/* Image at the top */}
+      {/* <Image source={image} style={styles.image} /> */}
+
+      {/* Restaurant Info */}
+      <View style={styles.infoContainer}>
+        <Text >{codigo_Product}</Text>
+
+        {/* Description */}
+        <Text style={styles.description}>{description}</Text>
+
+        {/* Restaurant Category */}
+        <Text style={styles.category}>{material}</Text>
+      </View>
     </View>
-  );
+    </SafeAreaView>
+    // <View>
+    //   <Card style={styles.card}>
+    //       <Card.Title  />
+    //       <Card.Content>
+    //         <Paragraph>Codigo Producto: {cod_Product}</Paragraph>
+    //         <Paragraph>Descripcion Joya: {description}</Paragraph>
+    //         <Paragraph>Material: {material}</Paragraph>
+    //       </Card.Content>
+    //     </Card>
+    // </View>
+);
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
   card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 20,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,  // Adds shadow on Android
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoContainer: {
+    padding: 15,
+  },
+  description: {
+    fontSize: 14,
+    color: '#555',
     marginBottom: 10,
+  }, 
+  category: {
+    fontSize: 12,
+    color: '#1abc9c',  // Teal for category
+    fontWeight: 'bold',
   },
 });
 
