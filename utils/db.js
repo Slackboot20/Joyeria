@@ -44,4 +44,23 @@ const getProductById = async (id) => {
     return jewel;
 };
 
-export { getProducts, getProductById };
+const postProduct = async (newJewel) => {
+    try {
+        const response = await axios.post(`${BACKEND_URL}` + `/jewel/create.json`, newJewel);
+        console.log('Producto agregado:', response.data);
+        return response.data;  // Esto devuelve el ID generado por Firebase
+    } catch (error) {
+        console.error('Error al agregar el producto:', error);
+    }
+};
+
+
+const updateData = async (data) => {
+    try {
+        const res = await axios.patch(`${BACKEND_URL}` + `/jewel/update/${id}.json`, data);
+    } catch (error) {
+        console.error("Error al modificar producto", error)
+    }
+}
+
+export { getProducts, getProductById, postProduct };

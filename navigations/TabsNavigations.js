@@ -34,23 +34,15 @@ const TabsNavigations = () => {
           tabBarInactiveTintColor: '#000000',
 
           tabBarStyle: {
-            paddingBottom: 20,
-            paddingTop: 15,
-            height: 85,
+            backgroundColor: '#fdf2e9',  // Light beige for tab bar background
+            borderTopColor: '#e67e22',  // Orange for tab bar border
           },
-          tabBarItemStyle: {
-            marginHorizontal: 20,
-          },
-          tabBarIconStyle: {
-            marginTop: -5,
-          },
-          headerShown: false,
         })}
       >
-        <Tab.Screen name="Joyas" component={Joyas} />
-        <Tab.Screen name="Crear Joya" component={CrearJoya} />
-        <Tab.Screen name="Movimiento" component={Report} />
-        <Tab.Screen name="Perfil" component={Profile} />
+        <Tab.Screen name="Joyas" component={Joyas} options={{ headerShown: false }} />
+        <Tab.Screen name="Crear Joya" component={CrearJoya} options={{ headerShown: false }}/>
+        <Tab.Screen name="Movimiento" component={Report} options={{ headerShown: false }}/>
+        <Tab.Screen name="Perfil" component={Profile} options={{ headerShown: false }} />
       </Tab.Navigator>
     </View>
   );

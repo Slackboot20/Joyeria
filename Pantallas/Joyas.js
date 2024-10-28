@@ -4,8 +4,6 @@ import { getProducts } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 
-
-
 const Joyas = () => {
 
     const navigation = useNavigation();
@@ -44,7 +42,13 @@ const Joyas = () => {
             navigation.navigate('JewelryDetail', { 
               codigo_Product: jewel.cod_Product,
               description: jewel.description,
-              material: jewel.material
+              material: jewel.material,
+              id_joya: jewel.id_joya,
+              precioInicial: jewel.precioInicial,
+              precioFinal: jewel.precioFinal,
+              material: jewel.material,
+              peso: jewel.peso,
+              provedor: jewel.provedor
             })
           }
           >
@@ -58,7 +62,7 @@ const Joyas = () => {
       )}
     </ScrollView>
     )
-}
+};
 
 
 export default Joyas;

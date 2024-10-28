@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import { Card, Paragraph } from 'react-native-paper';
 
 const CardJewelry = ({codigo_Product, description, material}) => {
 
@@ -21,16 +20,6 @@ const CardJewelry = ({codigo_Product, description, material}) => {
       </View>
     </View>
     </SafeAreaView>
-    // <View>
-    //   <Card style={styles.card}>
-    //       <Card.Title  />
-    //       <Card.Content>
-    //         <Paragraph>Codigo Producto: {cod_Product}</Paragraph>
-    //         <Paragraph>Descripcion Joya: {description}</Paragraph>
-    //         <Paragraph>Material: {material}</Paragraph>
-    //       </Card.Content>
-    //     </Card>
-    // </View>
 );
 };
 

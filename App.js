@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import InicializerApp from './Pantallas/InicializerApp';
 import TabsNavigations from './navigations/TabsNavigations';
 import FormJoya from './Pantallas/FormJoya';
 import FormMovemt from './Pantallas/FormMovemt';
+import { AuthContext } from './context/auth-context';
+import AuthContextProvider from "./context/auth-context";
 
 
 const Stack = createStackNavigator();
 
-
-export default function App() {
+const AppNavigator = () => {
+  const authCtx = useContext(AuthContext);
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="InicializerApp">
+      <Stack.Navigator initialRouteName={authCtx.isLoggedIn ? "Tabs" : "InicializerApp"}>
         <Stack.Screen
           name="InicializerApp"
           component={InicializerApp}
@@ -43,6 +44,21 @@ export default function App() {
           }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+  );
+};
+
+ const App = () => {
+  return (
+    // Aquí se envuelve la navegación en el contexto de autenticación
+    // lo separe en dos componentes para que se vea mas ordenado
+    // pero pueden hacerlo en uno solo
+    // el navigationContainer es el que esta primero en este archivo
+    <AuthContextProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }
+
+export default App;
