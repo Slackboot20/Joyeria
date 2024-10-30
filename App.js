@@ -7,6 +7,7 @@ import FormJoya from './Pantallas/FormJoya';
 import FormMovemt from './Pantallas/FormMovemt';
 import { AuthContext } from './context/auth-context';
 import AuthContextProvider from "./context/auth-context";
+import JewelryDetail from './Pantallas/JewelryDetail';
 
 
 const Stack = createStackNavigator();
@@ -42,6 +43,15 @@ const AppNavigator = () => {
             headerTintColor: '#FFFFFF', // Cambia el color del texto del header
             headerStyle: { backgroundColor: 'peru' }, // Cambia el color de fondo del header
           }}
+        />
+        <Stack.Screen
+        name="JewelryDetail"
+        component={JewelryDetail}
+        options={{
+          title: 'Volver', // Cambia el texto del encabezado
+          headerTintColor: '#FFFFFF', // Cambia el color del texto del header
+          headerStyle: {backgroundColor: 'peru'}
+        }}
         />
       </Stack.Navigator>
   );

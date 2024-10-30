@@ -3,6 +3,30 @@ import axios from "axios";
 const apiKey = 'AIzaSyD6mgYPdQMjcN6FmGJTLrGVRf3SD1f2LfM'; 
 
 
+async function autenticateregister(mode, email, password){
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
+
+  try {
+    const response = await axios.post(url, {
+      email: email,
+      password: password,
+      returnSecureToken: true,  // Ensure we get back a token
+    });
+    if(response.status === 200){
+        const token = response.data.idToken;  // extraemos el token de la respuesta
+            return token; 
+    } else {
+        Alert.alert("Login Failed", "Invalid email or password.");
+    }
+  } catch (error) {
+    // Si hay un error mostramos una alerta diferente. eso digamos pasaria si el apiKey es incorrecto o si firebase esta caido
+    Alert.alert("Login Error", "An error occurred. Please try again.");
+    console.log("error");
+  } finally {
+    //setIsLoading(false);  // esto es para que se quite el loading en caso de que lo quieran implementar luego
+  }
+}
+
 // ya que puede ser que se necesite en otros lugares, se crea una funcion que se pueda reutilizar
 // en todas partes del codigo
 // por ejemplo si quieren hacer la parte de registro, se puede reutilizar esta funcion
@@ -48,3 +72,10 @@ export async function login(email, password) {
     // la parte de signInWithPassword pueden ignorarla por ahora. pero si les interesa saber digamos podriamos tener diferentes modos de autenticacion
     return authenticate('signInWithPassword', email, password);
 }
+
+
+export async function registrer (email, password){
+  //Se llama a la funcion autenticateregister con el metodo register con email y paswaord en donde se va a crear el usuario
+  return autenticateregister(`signUp`, email, password);
+}
+

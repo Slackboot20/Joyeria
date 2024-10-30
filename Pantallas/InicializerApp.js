@@ -4,6 +4,7 @@ import Buttons from '../components/Buttons';
 import style from '../Styles/style'
 import { login } from '../utils/auth'; // Importar la utilidad de autenticación
 import { AuthContext } from '../context/auth-context'; // importamos el contexto de autenticacion
+import { registrer } from '../utils/auth';
 
 
 export default function InicializerApp({ navigation }) {

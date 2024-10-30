@@ -31,6 +31,7 @@ const Joyas = () => {
     }
   
     return(
+      //Agregar un SafeView
       <ScrollView style={styles.container}>
         {fetchedProducts.length === 0 ? (
           <Text>No hay joyas</Text> // 

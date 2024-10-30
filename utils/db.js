@@ -63,4 +63,4 @@ const updateData = async (data) => {
     }
 }
 
-export { getProducts, getProductById, postProduct };
+export { getProducts, getProductById, postProduct, updateData };
