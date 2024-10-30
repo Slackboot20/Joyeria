@@ -8,7 +8,7 @@ import FormMovemt from './Pantallas/FormMovemt';
 import { AuthContext } from './context/auth-context';
 import AuthContextProvider from "./context/auth-context";
 import JewelryDetail from './Pantallas/JewelryDetail';
-
+import FormUpdate from './Pantallas/FormUpdate';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +51,15 @@ const AppNavigator = () => {
           title: 'Volver', // Cambia el texto del encabezado
           headerTintColor: '#FFFFFF', // Cambia el color del texto del header
           headerStyle: {backgroundColor: 'peru'}
+        }}
+        />
+        <Stack.Screen
+        name="FormUpdate"
+        component={FormUpdate}
+        options={{
+          title: 'Volver', // Cambia el texto del encabezado
+          headerTintColor: '#FFFFFF', // Cambia el color del texto del header
+          headerStyle: {backgroundColor: 'peru'} 
         }}
         />
       </Stack.Navigator>
