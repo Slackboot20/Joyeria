@@ -42,7 +42,7 @@ export default function CrearJoya(){
           <TouchableOpacity
           key={index}
           onPress={() => 
-            navigation.navigate('FormJoya', { 
+            navigation.navigate('FormUpdate', { 
               codigo_Product: jewel.cod_Product,
               description: jewel.description,
               material: jewel.material,
@@ -65,7 +65,7 @@ export default function CrearJoya(){
       )}
     <View >
     <ButtonsRadians 
-        routename='FormJoya'
+        routename='FormUpdate'
         text="Crear Joyas"
     />
     </View>
