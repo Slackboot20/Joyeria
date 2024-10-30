@@ -34,7 +34,7 @@ const TabsNavigations = () => {
           tabBarInactiveTintColor: '#000000',
 
           tabBarStyle: {
-            backgroundColor: '#fdf2e9',  // Light beige for tab bar background
+            backgroundColor: 'white',  // Light beige for tab bar background
             borderTopColor: '#e67e22',  // Orange for tab bar border
           },
         })}

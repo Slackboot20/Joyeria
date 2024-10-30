@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity} from 'react-native'
+import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, SafeAreaView} from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
@@ -32,8 +32,9 @@ export default function CrearJoya(){
     }
   
     return(
-      <ScrollView 
-        style={styles.container}>
+      <SafeAreaView
+      style={styles.container}>
+        <ScrollView >
         {fetchedProducts.length === 0 ? (
           <Text>No hay joyas</Text> // 
         ):( 
@@ -69,16 +70,19 @@ export default function CrearJoya(){
     />
     </View>
     </ScrollView>
-    
-      
+
+      </SafeAreaView>
+        
     )
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    backgroundColor: '#f4f6f6',  // Light grey background
+    marginHorizontal: 16, // Márgenes a los lados (izquierda y derecha)
+    marginVertical: 40,   // Márgenes en la parte superior e inferior
+    padding: 10,          // Opcional: Espaciado interior para el contenido
+    backgroundColor: '#f0f0f0' // Color de fondo opcional
   },
   loadingContainer: {
     flex: 1,

@@ -1,4 +1,4 @@
-import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity} from 'react-native'
+import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, SafeAreaView} from 'react-native'
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
@@ -32,26 +32,27 @@ const Joyas = () => {
   
     return(
       //Agregar un SafeView
-      <ScrollView style={styles.container}>
-        {fetchedProducts.length === 0 ? (
-          <Text>No hay joyas</Text> // 
-        ):( 
-          fetchedProducts.map((jewel, index) => (
-          <TouchableOpacity
-          key={index}
-          onPress={() => 
-            navigation.navigate('JewelryDetail', { 
-              codigo_Product: jewel.cod_Product,
-              description: jewel.description,
-              material: jewel.material,
-              id_joya: jewel.id_joya,
-              precioInicial: jewel.precioInicial,
-              precioFinal: jewel.precioFinal,
-              material: jewel.material,
-              peso: jewel.peso,
-              provedor: jewel.provedor
-            })
-          }
+      <SafeAreaView style={styles.container}>
+        <ScrollView >
+          {fetchedProducts.length === 0 ? (
+            <Text>No hay joyas</Text> // 
+          ):( 
+            fetchedProducts.map((jewel, index) => (
+            <TouchableOpacity
+            key={index}
+            onPress={() => 
+              navigation.navigate('JewelryDetail', { 
+                codigo_Product: jewel.cod_Product,
+                description: jewel.description,
+                material: jewel.material,
+                id_joya: jewel.id_joya,
+                precioInicial: jewel.precioInicial,
+                precioFinal: jewel.precioFinal,
+                material: jewel.material,
+                peso: jewel.peso,
+                provedor: jewel.provedor
+              })
+            }
           >
             <CardJewelry
             codigo_Product={jewel.cod_Product}
@@ -62,6 +63,8 @@ const Joyas = () => {
         ))
       )}
     </ScrollView>
+  </SafeAreaView>
+     
     )
 };
 
@@ -71,8 +74,10 @@ export default Joyas;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    backgroundColor: '#f4f6f6',  // Light grey background
+    marginHorizontal: 16, // Márgenes a los lados (izquierda y derecha)
+    marginVertical: 40,   // Márgenes en la parte superior e inferior
+    padding: 10,          // Opcional: Espaciado interior para el contenido
+    backgroundColor: '#f0f0f0' // Color de fondo opcional
   },
   loadingContainer: {
     flex: 1,
