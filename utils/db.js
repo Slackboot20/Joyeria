@@ -68,7 +68,7 @@ const postProduct = async (newJewel) => {
 
 const updateData = async (data, id) => {
     try {
-        const url = `${BACKEND_URL}jewel.json`;
+        const url = `${BACKEND_URL}` + `jewel/${id}.json`;
         console.log("URL de la petición:", url);
         const res = await axios.patch(url, data);
         console.log("Respuesta de Firebase:", res);
