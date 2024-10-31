@@ -33,7 +33,17 @@ const jewel = [
       precioInicial: '500.000',
       precioFinal: '600.000',
       provedor: 'Ecopetrol'
-  }
+    },
+    {
+      id_joya: 56,
+      cod_Product: '04',
+      description: 'Cadeba con peepita de oro',
+      peso: '15 gramos',
+      material: 'OroPlata',
+      precioInicial: '500.000',
+      precioFinal: '600.000',
+      provedor: 'Ecopetrol'
+    }
 ];
 // Add more restaurant objects as needed
 // este metodo se encarga de subir la data a firebase

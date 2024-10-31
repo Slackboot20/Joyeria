@@ -43,7 +43,7 @@ export default function CrearJoya(){
           key={index}
           onPress={() => 
             navigation.navigate('FormUpdate', { 
-              codigo_Product: jewel.cod_Product,
+              codigo_Product: response.data[index].cod_Product,
               description: jewel.description,
               material: jewel.material,
               precioInicial: jewel.precioInicial,
@@ -51,7 +51,7 @@ export default function CrearJoya(){
               material: jewel.material,
               peso: jewel.peso,
               provedor: jewel.provedor,
-              id: jewel.id_joya
+              id: index
             })
           }
           >
