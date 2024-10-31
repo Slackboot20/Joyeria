@@ -4,17 +4,16 @@ import Buttons from '../components/Buttons';
 import style from '../Styles/style'
 import { login } from '../utils/auth'; // Importar la utilidad de autenticación
 import { AuthContext } from '../context/auth-context'; // importamos el contexto de autenticacion
-import { registrer } from '../utils/auth';
+import { register } from '../utils/auth';
 
 
 export default function InicializerApp({ navigation }) {
-    const [email, setEmail] = useState('');
+    const [email, setemail] = useState('');
     const [password, setPassword] = useState('');
     const authCtx = useContext(AuthContext); // Usar el contexto de autenticación. con esta linea carga el contexto de autenticacion
 
     const [isLogin, setIsLogin] = useState(true);
-    const [fullName, setFullName] = useState('');
-    const [cedula, setCedula] = useState('');
+    const [emailRegister, setemailRegister] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
 
     async function handleLogin  ()  {
@@ -38,8 +37,27 @@ export default function InicializerApp({ navigation }) {
           }
     };
 
-    const handleRegister = () => {
-        navigation.navigate('Tabs');
+    async function handleRegister  ()  {
+        if (!emailRegister || !registerPassword) {
+            // si no hay email o password mostramos un alerta
+            Alert.alert('Error', 'Please enter both email and password', [{ text: 'OK' }]);
+            return;
+          }
+      
+          try {
+            const token = await register(emailRegister, registerPassword); // llamamos la utilidad de autenticacion
+            // si esta autenticacion tiene exito devuelve un token. El que devuelve esto es firebase
+            //el cual le pasamos al contexto
+      
+            authCtx.register(token); // el token se pasa al contexto de autenticacion y lo cargamos con la funcion de login
+            // (por dentro de un setAuthToken(token))
+      
+            navigation.navigate('InicializerApp'); //si todo sale bien navegamos a la pantalla de MainTabs
+          } catch (error) {
+            console.error(error)
+            Alert.alert('Error', 'Login failed. Please try again.');
+          }
+
     };
 
     return (
@@ -58,7 +76,7 @@ export default function InicializerApp({ navigation }) {
                                 style={styles.input}
                                 placeholder="Nombre de Usuario"
                                 value={email}
-                                onChangeText={setEmail}
+                                onChangeText={setemail}
                             />
                             <TextInput
                                 style={styles.input}
@@ -82,15 +100,9 @@ export default function InicializerApp({ navigation }) {
                             <Text style={styles.title}>Registro</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Nombre Completo"
-                                value={fullName}
-                                onChangeText={setFullName}
-                            />
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Cédula"
-                                value={cedula}
-                                onChangeText={setCedula}
+                                placeholder="Correo Electronico"
+                                value={emailRegister}
+                                onChangeText={setemailRegister}
                             />
                             <TextInput
                                 style={styles.input}

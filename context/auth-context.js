@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { register as registerAuth, login as loginAuth } from "../utils/auth";
 
 // Creamos un contexto de autenticación. estos son los parametros recomendados para el contexto
 // pero pueden usar los que quieran
@@ -10,6 +11,7 @@ export const AuthContext = createContext({
   token: '',
   isLoggedIn: false,
   login: async () => {},
+  register: async () => {},
   logout: () => {},
 }); 
 function AuthContextProvider({ children }){
@@ -20,6 +22,12 @@ function AuthContextProvider({ children }){
     setAuthToken(token);
   };
     
+  async function register(email, password) {
+    const token = await registerAuth(email, password);
+    if (token) {
+      setAuthToken(token);
+    }
+  }
 
   // Función para hacer logout (no implementada)
   function logout(){
@@ -31,8 +39,9 @@ function AuthContextProvider({ children }){
   const value = {
     token: authToken, //el set que hemos hablado antes
     isLoggedIn: !!authToken, // el !! es para convertir el token a un booleano. basicamente es un if existe el token true, sino false
-    login: login, // la funcion de login
-    logout: logout, // la funcion de logout
+    login, // la funcion de login
+    logout, // la funcion de logout
+    register, // la funcion de registro
   };
 
 

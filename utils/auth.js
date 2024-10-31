@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Alert } from "react-native";
 
 const apiKey = 'AIzaSyD6mgYPdQMjcN6FmGJTLrGVRf3SD1f2LfM'; 
 
@@ -21,7 +22,7 @@ async function autenticateregister(mode, email, password){
   } catch (error) {
     // Si hay un error mostramos una alerta diferente. eso digamos pasaria si el apiKey es incorrecto o si firebase esta caido
     Alert.alert("Login Error", "An error occurred. Please try again.");
-    console.log("error");
+    console.log(error);
   } finally {
     //setIsLoading(false);  // esto es para que se quite el loading en caso de que lo quieran implementar luego
   }
@@ -74,7 +75,7 @@ export async function login(email, password) {
 }
 
 
-export async function registrer (email, password){
+export async function register (email, password){
   //Se llama a la funcion autenticateregister con el metodo register con email y paswaord en donde se va a crear el usuario
   return autenticateregister(`signUp`, email, password);
 }
