@@ -15,7 +15,8 @@ const FormJoya = ({route}) => {
     material: '',
     precioInicial: '',
     precioFinal: '',
-    provedor: ''
+    provedor: '',
+    id: 0
   });
 
   const handleChange = (name, value) => {

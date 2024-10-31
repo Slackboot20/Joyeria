@@ -46,7 +46,7 @@ const getProductById = async (id) => {
 
 const postProduct = async (newJewel) => {
     try {
-        const response = await axios.post(`${BACKEND_URL}` + `/jewel/create.json`, newJewel);
+        const response = await axios.post(`${BACKEND_URL}` + `/jewel.json`, newJewel);
         console.log('Producto agregado:', response.data);
         Alert.alert(
             "Agregar Producto",
@@ -68,7 +68,7 @@ const postProduct = async (newJewel) => {
 
 const updateData = async (data, id) => {
     try {
-        const url = `${BACKEND_URL}update/${id}.json`;
+        const url = `${BACKEND_URL}jewel.json`;
         console.log("URL de la petición:", url);
         const res = await axios.patch(url, data);
         console.log("Respuesta de Firebase:", res);
