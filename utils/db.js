@@ -1,5 +1,5 @@
 // Import Axios
-
+import { Alert } from 'react-native';
 import axios from 'axios';
 
 BACKEND_URL = 'https://joyeria-5db71-default-rtdb.firebaseio.com/';
@@ -48,6 +48,17 @@ const postProduct = async (newJewel) => {
     try {
         const response = await axios.post(`${BACKEND_URL}` + `/jewel/create.json`, newJewel);
         console.log('Producto agregado:', response.data);
+        Alert.alert(
+            "Agregar Producto",
+            "¿Quiere agregar este producto?",
+            [
+                {
+                    text: "Agregar",
+                    onPress: () => console.log("Agregado"),
+                    style: "cancel"
+                },
+            ]
+        );
         return response.data;  // Esto devuelve el ID generado por Firebase
     } catch (error) {
         console.error('Error al agregar el producto:', error);
@@ -55,12 +66,17 @@ const postProduct = async (newJewel) => {
 };
 
 
-const updateData = async (data) => {
+const updateData = async (data, id) => {
     try {
-        const res = await axios.patch(`${BACKEND_URL}` + `/jewel/update/${id}.json`, data);
+        const url = `${BACKEND_URL}update/${id}.json`;
+        console.log("URL de la petición:", url);
+        const res = await axios.patch(url, data);
+        console.log("Respuesta de Firebase:", res);
+        return res.data;
     } catch (error) {
-        console.error("Error al modificar producto", error)
+        console.error("Error al modificar producto", error);
+        throw error;
     }
-}
+};
 
 export { getProducts, getProductById, postProduct, updateData };

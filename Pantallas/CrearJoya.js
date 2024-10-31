@@ -46,12 +46,12 @@ export default function CrearJoya(){
               codigo_Product: jewel.cod_Product,
               description: jewel.description,
               material: jewel.material,
-              id_joya: jewel.id_joya,
               precioInicial: jewel.precioInicial,
               precioFinal: jewel.precioFinal,
               material: jewel.material,
               peso: jewel.peso,
-              provedor: jewel.provedor
+              provedor: jewel.provedor,
+              id: jewel.id_joya
             })
           }
           >
@@ -65,7 +65,7 @@ export default function CrearJoya(){
       )}
     <View >
     <ButtonsRadians 
-        routename='FormUpdate'
+        routename='FormJoya'
         text="Crear Joyas"
     />
     </View>

@@ -23,7 +23,17 @@ const jewel = [
         precioInicial: '100.000',
         precioFinal: '150.000',
         provedor: 'Ecopetrol'
-    }
+    },
+    {
+      id_joya: 32,
+      cod_Product: '03',
+      description: 'Topos con esmeralda',
+      peso: '15 gramos',
+      material: 'Oro',
+      precioInicial: '500.000',
+      precioFinal: '600.000',
+      provedor: 'Ecopetrol'
+  }
 ];
 // Add more restaurant objects as needed
 // este metodo se encarga de subir la data a firebase

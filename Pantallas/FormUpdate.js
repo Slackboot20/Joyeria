@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { patchProduct } from '../utils/db';
+import { updateData } from '../utils/db';
 
 const FormUpdate = ({ route }) => {
-    const { codigo_Product, peso, description, material, precioInicial, precioFinal, provedor } = route.params;
+    const { codigo_Product, peso, description, material, precioInicial, precioFinal, provedor, id } = route.params;
 
     const [jewel, setJewel] = useState({
-        code_Product: '',
+        codigo_Product: '',
         peso: '',
         description: '',
         material: '',
@@ -37,8 +37,9 @@ const FormUpdate = ({ route }) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await patchProduct(jewel);
+            const response = await updateData( jewel, id);
             console.log('Producto actualizado:', response);
+            return response.data;
             // Aquí puedes realizar acciones adicionales como mostrar una notificación
         } catch (error) {
             console.error('Error al actualizar el producto:', error);
@@ -50,7 +51,7 @@ const FormUpdate = ({ route }) => {
             <Text style={styles.label}>Código del Producto:</Text>
             <TextInput
                 style={styles.input}
-                value={jewel.code_Product}
+                value={jewel.codigo_Product}
                 onChangeText={(value) => handleChange('codigo_Product', value)}
                 placeholder="Código"
                 editable={false} // Desactivado si no quieres que el código se modifique
