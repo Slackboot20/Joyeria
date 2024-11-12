@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, SafeAreaView} from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect , useCallback } from 'react';
+import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, SafeAreaView, RefreshControl} from 'react-native'
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
 import ButtonsRadians from '../components/ButtonsRadians';
@@ -10,17 +10,28 @@ export default function CrearJoya(){
     const navigation = useNavigation();
     const [fetchedProducts, setFetchedProduct] = useState([]);
     const [loading, setLoading] = useState(true); // Estado de carga
+    const isFocused = useIsFocused(); // Verifica si la pantalla está en foco
+    const [refreshing, setRefreshing] = useState(false); //Permite refrescar con interaccion del usuario
+
 
   
-    useEffect(() => {
-      async function fetchProducts() { // <-- llamar como quieran
+    const fetchproductos = async () => {
+      setLoading(true);
         const jewels = await getProducts();
         setFetchedProduct(jewels);
         setLoading(false);
-      }
-      fetchProducts(); // <-- llamar como quieran
-    }, []);
+    }
+
+    useEffect(() => {
+      if(isFocused)
+        fetchproductos(); // <-- llamar como quieran
+    }, [isFocused]);
   
+    const onRefresh = useCallback(async () => {
+      setRefreshing(true);
+      await fetchproductos();
+      setRefreshing(false);
+  }, []);
   
     if (loading) {
       return (
@@ -34,7 +45,11 @@ export default function CrearJoya(){
     return(
       <SafeAreaView
       style={styles.container}>
-        <ScrollView >
+        <ScrollView 
+        refreshControl={
+          <RefreshControl refreshing={refreshing}  onRefresh={onRefresh}/>
+        }
+        >
         {fetchedProducts.length === 0 ? (
           <Text>No hay joyas</Text> // 
         ):( 

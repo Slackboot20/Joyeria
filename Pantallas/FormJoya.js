@@ -3,10 +3,7 @@ import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { postProduct } from '../utils/db';
 
 
-const FormJoya = ({route}) => {
-    
-  // const{cod_Product} = route.params;
-
+const FormJoya = () => {
 
   const [jewel, setJewel] = useState({
     cod_Product: '',

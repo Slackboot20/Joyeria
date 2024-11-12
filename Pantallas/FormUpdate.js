@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { updateData } from '../utils/db';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const FormUpdate = ({ route }) => {
+    const navigation = useNavigation();
     const { codigo_Product, peso, description, material, precioInicial, precioFinal, provedor, id } = route.params;
 
     const [jewel, setJewel] = useState({
@@ -39,8 +43,8 @@ const FormUpdate = ({ route }) => {
         try {
             const response = await updateData( jewel, id);
             console.log('Producto actualizado:', response);
-            return response.data;
             // Aquí puedes realizar acciones adicionales como mostrar una notificación
+            navigation.goBack();
         } catch (error) {
             console.error('Error al actualizar el producto:', error);
         }
