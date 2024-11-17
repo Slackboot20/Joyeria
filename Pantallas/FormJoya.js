@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { postProduct } from '../utils/db';
+import { useNavigation } from '@react-navigation/native';
 
 
 const FormJoya = () => {
+    const navigation = useNavigation();
 
   const [jewel, setJewel] = useState({
     cod_Product: '',
@@ -28,6 +30,7 @@ const FormJoya = () => {
         const response = await postProduct(jewel);
         console.log('Producto agregado:', response);
         // Aquí puedes realizar acciones adicionales como mostrar una notificación
+        navigation.goBack();
     } catch (error) {
         console.error('Error al agregar el producto:', error);
     }

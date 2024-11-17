@@ -45,6 +45,17 @@ const jewel = [
       provedor: 'Ecopetrol'
     }
 ];
+
+const movimiento = [
+  {
+    id_producto : 0,
+    tipo_movimiento : 'add',
+    cantidad: 1,
+    info_movimiento: new Date().toISOString
+  }
+];
+
+
 // Add more restaurant objects as needed
 // este metodo se encarga de subir la data a firebase
 const uploadDataToFirebase = async () => {
@@ -54,10 +65,10 @@ const uploadDataToFirebase = async () => {
     // esa url esta cmpuesta por la url de la base de datos
     // y el nombre del archivo donde se va a guardar la data
     const response = await axios.put(
-      'https://joyeria-5db71-default-rtdb.firebaseio.com/jewel.json',
-      jewel
+      'https://joyeria-5db71-default-rtdb.firebaseio.com/movimiento.json',
+      movimiento
     );
-    console.log('Data subida de manera exitosa:', response.data);
+    console.log('Data subida de manera exitosa 1:', response.data);
   } catch (error) {
     console.error('Error subiendo la data', error);
   }
