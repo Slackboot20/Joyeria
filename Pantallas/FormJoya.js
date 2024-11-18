@@ -15,7 +15,7 @@ const FormJoya = () => {
     precioInicial: '',
     precioFinal: '',
     provedor: '',
-    id: 0
+    id: ''
   });
 
   const handleChange = (name, value) => {
