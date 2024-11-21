@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { updateData } from '../utils/db';
+import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
 import { useNavigation } from '@react-navigation/native';
-
-
 
 const FormUpdate = ({ route }) => {
     const navigation = useNavigation();
-    const { codigo_Product, peso, description, material, precioInicial, precioFinal, provedor, id } = route.params;
+    const { codigo_Product, peso, description, material, precioInicial, precioFinal, provedor, id, imageUrl } = route.params;
 
     const [jewel, setJewel] = useState({
         codigo_Product: '',
@@ -16,37 +16,69 @@ const FormUpdate = ({ route }) => {
         material: '',
         precioInicial: '',
         precioFinal: '',
-        provedor: ''
+        provedor: '',
+        imageUrl: '', // Campo para la URL de la imagen
     });
+
+    const [newImageUri, setNewImageUri] = useState(null); // Imagen seleccionada localmente
 
     useEffect(() => {
         // Asigna los valores de route.params al estado
         setJewel({
-            code_Product: codigo_Product || '',
+            codigo_Product: codigo_Product || '',
             peso: peso || '',
             description: description || '',
             material: material || '',
             precioInicial: precioInicial || '',
             precioFinal: precioFinal || '',
-            provedor: provedor || ''
+            provedor: provedor || '',
+            imageUrl: imageUrl || '', // URL inicial de la imagen
         });
-    }, [codigo_Product, peso, description, material, precioInicial, precioFinal, provedor]);
+    }, [codigo_Product, peso, description, material, precioInicial, precioFinal, provedor, imageUrl]);
 
     const handleChange = (name, value) => {
         setJewel({
             ...jewel,
-            [name]: value
+            [name]: value,
         });
+    };
+
+    // Seleccionar una nueva imagen
+    const selectImage = async () => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaType: 'photo',
+                includeBase64: false,
+            });
+            if (result.assets && result.assets.length > 0) {
+                const selectedImage = result.assets[0];
+                setNewImageUri(selectedImage.uri); // Guardar la URI de la imagen seleccionada
+                Alert.alert('Imagen seleccionada', 'La imagen será subida al actualizar el producto.');
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Hubo un problema al seleccionar la imagen.');
+        }
     };
 
     const handleSubmit = async () => {
         try {
-            const response = await updateData( jewel, id);
+            let updatedImageUrl = jewel.imageUrl;
+
+            // Subir nueva imagen si se selecciona una
+            if (newImageUri) {
+                updatedImageUrl = await uploadImageToCloudinary(newImageUri);
+            }
+
+            // Actualizar datos incluyendo la URL de la imagen
+            const updatedJewel = { ...jewel, imageUrl: updatedImageUrl };
+
+            const response = await updateData(updatedJewel, id);
             console.log('Producto actualizado:', response);
-            // Aquí puedes realizar acciones adicionales como mostrar una notificación
+            Alert.alert('Éxito', 'Producto actualizado correctamente.');
             navigation.goBack();
         } catch (error) {
             console.error('Error al actualizar el producto:', error);
+            Alert.alert('Error', 'Hubo un problema al actualizar el producto.');
         }
     };
 
@@ -105,6 +137,11 @@ const FormUpdate = ({ route }) => {
                 onChangeText={(value) => handleChange('provedor', value)}
                 placeholder="Proveedor"
             />
+
+            {/* Botón para seleccionar una nueva imagen */}
+            <Button title="Seleccionar Nueva Imagen" onPress={selectImage} />
+
+            {/* Botón para actualizar producto */}
             <Button title="Actualizar Producto" onPress={handleSubmit} />
         </View>
     );
