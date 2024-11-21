@@ -2,11 +2,7 @@ import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
-<<<<<<< HEAD
 import React, { useState, useEffect, useCallback} from 'react';
-=======
-import React, { useState, useEffect, useCallback } from 'react';
->>>>>>> 7483aa44068d6d247fc237573dcd26fb3ee99b74
 
 const Joyas = () => {
     const navigation = useNavigation();
