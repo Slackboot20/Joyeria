@@ -12,37 +12,8 @@ const jewel = [
         material: 'Oro',
         precioInicial: '500.000',
         precioFinal: '600.000',
-        provedor: 'Ecopetrol'
-    },
-    {
-        id_joya: 2,
-        cod_Product: '02',
-        description: 'Anillo de Plata entorchado con una piedra preciosa',
-        peso: '20 gramos',
-        material: 'Plata',
-        precioInicial: '100.000',
-        precioFinal: '150.000',
-        provedor: 'Ecopetrol'
-    },
-    {
-      id_joya: 32,
-      cod_Product: '03',
-      description: 'Topos con esmeralda',
-      peso: '15 gramos',
-      material: 'Oro',
-      precioInicial: '500.000',
-      precioFinal: '600.000',
-      provedor: 'Ecopetrol'
-    },
-    {
-      id_joya: 56,
-      cod_Product: '04',
-      description: 'Cadeba con peepita de oro',
-      peso: '15 gramos',
-      material: 'OroPlata',
-      precioInicial: '500.000',
-      precioFinal: '600.000',
-      provedor: 'Ecopetrol'
+        provedor: 'Ecopetrol',
+        image: 'https://res.cloudinary.com/dwwrhbr8w/image/upload/v1731905042/o8k9f11hdhrqufy3cwxt.jpg'
     }
 ];
 
@@ -50,8 +21,7 @@ const movimiento = [
   {
     id_producto : 0,
     tipo_movimiento : 'add',
-    cantidad: 1,
-    info_movimiento: new Date().toISOString
+    info_movimiento: new Date().toISOString()
   }
 ];
 
@@ -65,7 +35,7 @@ const uploadDataToFirebase = async () => {
     // esa url esta cmpuesta por la url de la base de datos
     // y el nombre del archivo donde se va a guardar la data
     const response = await axios.put(
-      'https://joyeria-5db71-default-rtdb.firebaseio.com/movimiento.json',
+      'https://joyeria-5db71-default-rtdb.firebaseio.com/motion.json',
       movimiento
     );
     console.log('Data subida de manera exitosa 1:', response.data);

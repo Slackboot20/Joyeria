@@ -4,6 +4,17 @@ import axios from 'axios';
 
 BACKEND_URL = 'https://joyeria-5db71-default-rtdb.firebaseio.com/';
 
+const postMotion = async (newmotion) => {
+    try {
+        const response = await axios.post(`${BACKEND_URL}motion.json`, newmotion);
+        console.log('Create Motion', response.data);
+        return response.data;
+    } catch (error){
+        console.log('Error postMotion', error);
+    }
+}
+
+
 const getProducts = async () => {
     const response = await axios.get(`${BACKEND_URL}` + 'jewel.json');
 
@@ -25,7 +36,6 @@ const getProducts = async () => {
     console.log('Fetched products...')
     return jewels;
 };
-
 const getProductById = async (id) => {
     
     const response = await axios.get(`${BACKEND_URL}` + `/jewels/${id}.json`);
@@ -43,7 +53,6 @@ const getProductById = async (id) => {
 
     return jewel;
 };
-
 const postProduct = async (newJewel) => {
     try {
         const response = await axios.post(`${BACKEND_URL}` + `/jewel.json`, newJewel);
@@ -79,4 +88,4 @@ const updateData = async (data, id) => {
     }
 };
 
-export { getProducts, getProductById, postProduct, updateData };
+export { getProducts, getProductById, postProduct, updateData, postMotion };

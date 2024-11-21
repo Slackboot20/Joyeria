@@ -15,7 +15,13 @@ const FormJoya = () => {
     precioInicial: '',
     precioFinal: '',
     provedor: '',
-    id: ''
+    id: '',
+    image: ''
+  });
+
+  const [movent, setmovent] = useState({
+    id_producto: jewel.cod_Product,
+    tipo_movimiento: 'Add'
   });
 
   const handleChange = (name, value) => {
@@ -28,6 +34,7 @@ const FormJoya = () => {
   const handleSubmit = async () => {
     try {
         const response = await postProduct(jewel);
+
         console.log('Producto agregado:', response);
         // Aquí puedes realizar acciones adicionales como mostrar una notificación
         navigation.goBack();
