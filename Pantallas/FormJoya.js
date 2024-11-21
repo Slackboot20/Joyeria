@@ -8,38 +8,78 @@ import { useNavigation } from '@react-navigation/native';
 const FormJoya = () => {
     const navigation = useNavigation();
 
-  const [jewel, setJewel] = useState({
-    cod_Product: '',
-    peso: '',
-    description: '',
-    material: '',
-    precioInicial: '',
-    precioFinal: '',
-    provedor: '',
-    id: ''
-  });
-
-  const handleChange = (name, value) => {
-    setJewel({
-        ...jewel,
-        [name]: value
+    const [jewel, setJewel] = useState({
+        cod_Product: '',
+        peso: '',
+        description: '',
+        material: '',
+        precioInicial: '',
+        precioFinal: '',
+        provedor: '',
+        id: '',
+        imageUrl: '', // Campo para la URL de la imagen subida
     });
-  };
 
-  const handleSubmit = async () => {
-    try {
-        const response = await postProduct(jewel);
-        console.log('Producto agregado:', response);
-        // Aquí puedes realizar acciones adicionales como mostrar una notificación
-        navigation.goBack();
-    } catch (error) {
-        console.error('Error al agregar el producto:', error);
-    }
-  };
-  
+    const [imageUri, setImageUri] = useState(null); // Imagen seleccionada localmente
 
-  
+    useEffect(() => {
+        const getPermissions = async () => {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Permiso denegado', 'Necesitamos acceso a la galería para seleccionar una imagen.');
+            }
+        };
+        getPermissions();
+    }, []);
 
+    // Manejar cambios en los campos de texto
+    const handleChange = (name, value) => {
+        setJewel({
+            ...jewel,
+            [name]: value,
+        });
+    };
+
+    // Seleccionar imagen desde la galería
+    const selectImage = async () => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaType: 'photo',
+                includeBase64: false,
+            });
+            if (result.assets && result.assets.length > 0) {
+                const selectedImage = result.assets[0];
+                setImageUri(selectedImage.uri); // Guardar la URI de la imagen seleccionada
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Hubo un problema al seleccionar la imagen.');
+        }
+    };
+
+    // Enviar formulario
+    const handleSubmit = async () => {
+        try {
+            let imageUrl = jewel.imageUrl;
+
+            // Subir imagen si hay una seleccionada
+            if (imageUri) {
+                imageUrl = await uploadImageToCloudinary(imageUri);
+            }
+
+            // Actualizar el estado de la joya con la URL de la imagen
+            const jewelWithImage = { ...jewel, imageUrl };
+
+            // Enviar datos del producto
+            const response = await postProduct(jewelWithImage);
+            console.log('Producto agregado:', response);
+
+            Alert.alert('Éxito', 'Producto agregado correctamente.');
+            navigation.goBack();
+        } catch (error) {
+            console.error('Error al agregar el producto:', error);
+            Alert.alert('Error', 'Hubo un problema al agregar el producto.');
+        }
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContent}>
