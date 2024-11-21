@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, ScrollView } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
 import { postProduct } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
-
 
 const FormJoya = () => {
     const navigation = useNavigation();
@@ -15,13 +16,7 @@ const FormJoya = () => {
     precioInicial: '',
     precioFinal: '',
     provedor: '',
-    id: '',
-    image: ''
-  });
-
-  const [movent, setmovent] = useState({
-    id_producto: jewel.cod_Product,
-    tipo_movimiento: 'Add'
+    id: ''
   });
 
   const handleChange = (name, value) => {
@@ -34,7 +29,6 @@ const FormJoya = () => {
   const handleSubmit = async () => {
     try {
         const response = await postProduct(jewel);
-
         console.log('Producto agregado:', response);
         // Aquí puedes realizar acciones adicionales como mostrar una notificación
         navigation.goBack();
@@ -47,66 +41,78 @@ const FormJoya = () => {
   
 
 
-  return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Código del Producto:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.cod_Product}
-                onChangeText={(value) => handleChange('cod_Product', value)}
-                placeholder="Código"
-            />
-            <Text style={styles.label}>Peso:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.peso}
-                onChangeText={(value) => handleChange('peso', value)}
-                placeholder="Peso"
-                keyboardType="numeric"
-            />
-            <Text style={styles.label}>Descripción:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.description}
-                onChangeText={(value) => handleChange('description', value)}
-                placeholder="Descripción"
-            />
-            <Text style={styles.label}>Material:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.material}
-                onChangeText={(value) => handleChange('material', value)}
-                placeholder="Material"
-            />
-            <Text style={styles.label}>Precio Inicial:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.precioInicial}
-                onChangeText={(value) => handleChange('precioInicial', value)}
-                placeholder="Precio Inicial"
-                keyboardType="decimal-pad"
-            />
-            <Text style={styles.label}>Precio Final:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.precioFinal}
-                onChangeText={(value) => handleChange('precioFinal', value)}
-                placeholder="Precio Final"
-                keyboardType="decimal-pad"
-            />
-            <Text style={styles.label}>Proveedor:</Text>
-            <TextInput
-                style={styles.input}
-                value={jewel.provedor}
-                onChangeText={(value) => handleChange('provedor', value)}
-                placeholder="Proveedor"
-            />
-            <Button title="Agregar Producto" onPress={handleSubmit} />
-        </View>
+    return (
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+            <View style={styles.container}>
+                <Text style={styles.label}>Código del Producto:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.cod_Product}
+                    onChangeText={(value) => handleChange('cod_Product', value)}
+                    placeholder="Código"
+                />
+                <Text style={styles.label}>Peso:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.peso}
+                    onChangeText={(value) => handleChange('peso', value)}
+                    placeholder="Peso"
+                    keyboardType="numeric"
+                />
+                <Text style={styles.label}>Descripción:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.description}
+                    onChangeText={(value) => handleChange('description', value)}
+                    placeholder="Descripción"
+                />
+                <Text style={styles.label}>Material:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.material}
+                    onChangeText={(value) => handleChange('material', value)}
+                    placeholder="Material"
+                />
+                <Text style={styles.label}>Precio Inicial:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.precioInicial}
+                    onChangeText={(value) => handleChange('precioInicial', value)}
+                    placeholder="Precio Inicial"
+                    keyboardType="decimal-pad"
+                />
+                <Text style={styles.label}>Precio Final:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.precioFinal}
+                    onChangeText={(value) => handleChange('precioFinal', value)}
+                    placeholder="Precio Final"
+                    keyboardType="decimal-pad"
+                />
+                <Text style={styles.label}>Proveedor:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={jewel.provedor}
+                    onChangeText={(value) => handleChange('provedor', value)}
+                    placeholder="Proveedor"
+                />
+
+                {/* Botón para seleccionar imagen */}
+                <Button title="Seleccionar Imagen" onPress={selectImage} />
+
+                {/* Botón para agregar producto */}
+                <Button title="Agregar Producto" onPress={handleSubmit} />
+            </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        paddingVertical: 20,
+    },
     container: {
         padding: 20,
     },

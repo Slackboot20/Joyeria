@@ -30,6 +30,7 @@ const getProducts = async () => {
             precioInicial: response.data[key].precioInicial,
             precioFinal: response.data[key].precioFinal,
             provedor: response.data[key].provedor,
+            imageUrl: response.data[key].imageUrl,
         };
        jewels.push(jewel);
     }  
