@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Alert } from "react-native";
 
-const apiKey = 'AIzaSyD6mgYPdQMjcN6FmGJTLrGVRf3SD1f2LfM'; 
+const apiKey = '3dbdbac14d83bbd4fd200207f156f045dc008ca8'; 
 
 
 async function autenticateregister(mode, email, password){

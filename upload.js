@@ -35,7 +35,7 @@ const uploadDataToFirebase = async () => {
     // esa url esta cmpuesta por la url de la base de datos
     // y el nombre del archivo donde se va a guardar la data
     const response = await axios.put(
-      'https://joyeria-5db71-default-rtdb.firebaseio.com/motion.json',
+      'https://jeweler-a97c3-default-rtdb.firebaseio.com/motion.json',
       movimiento
     );
     console.log('Data subida de manera exitosa 1:', response.data);
