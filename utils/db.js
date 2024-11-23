@@ -14,6 +14,27 @@ const postMotion = async (newmotion) => {
     }
 }
 
+const getMotion = async () => {
+    try {
+        const response = await axios.get(`${BACKEND_URL}` + `motion.json`)
+
+        const motions = [];
+
+        for(const key in response.data){
+            const motion = {
+                id: key,
+                id_producto: response.data[key].id_producto,
+                tipo_movimiento: response.data[key].tipo_movimiento,
+                info_movimiento: response.data[key].info_movimiento,
+            };
+            motions.push(motion);
+        }
+        console.log('Search Motions');
+        return motions;
+    } catch(error){
+        console.log('Error al mostrar los movimientos', error);
+    }
+};
 
 const getProducts = async () => {
     const response = await axios.get(`${BACKEND_URL}` + 'jewel.json');
@@ -34,7 +55,7 @@ const getProducts = async () => {
         };
        jewels.push(jewel);
     }  
-    console.log('Fetched products...')
+    console.log('Search Products')
     return jewels;
 };
 const getProductById = async (id) => {
@@ -75,6 +96,14 @@ const postProduct = async (newJewel) => {
     }
 };
 
+const deleteProduct = async (id) => {
+    try {
+        const response = await axios.delete(`${BACKEND_URL}` + `/jewel/${id}`)
+        console.log('Producto eliminado');
+        } catch(error){
+        console.error('Error al eliminar el producto:', error);
+    }
+};
 
 const updateData = async (data, id) => {
     try {
@@ -89,4 +118,4 @@ const updateData = async (data, id) => {
     }
 };
 
-export { getProducts, getProductById, postProduct, updateData, postMotion };
+export { getProducts, getProductById, postProduct, updateData, postMotion, deleteProduct };

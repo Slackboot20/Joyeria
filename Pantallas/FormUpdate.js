@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { updateData } from '../utils/db';
+import { postMotion, updateData } from '../utils/db';
 import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,6 +19,12 @@ const FormUpdate = ({ route }) => {
         provedor: '',
         imageUrl: '', // Campo para la URL de la imagen
     });
+
+    const movent = {
+        id_producto: jewel.codigo_Product,
+        tipo_movimiento: 'Update',
+        info_movimiento: new Date().toISOString()
+    };
 
     const [newImageUri, setNewImageUri] = useState(null); // Imagen seleccionada localmente
 
@@ -74,6 +80,7 @@ const FormUpdate = ({ route }) => {
 
             const response = await updateData(updatedJewel, id);
             console.log('Producto actualizado:', response);
+            const res = await postMotion(movent);
             Alert.alert('Éxito', 'Producto actualizado correctamente.');
             navigation.goBack();
         } catch (error) {

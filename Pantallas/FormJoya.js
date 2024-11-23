@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
-import { postProduct } from '../utils/db';
+import { postProduct, postMotion, deleteProduct } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
+import { red } from '@cloudinary/url-gen/actions/adjust';
 
 const FormJoya = () => {
     const navigation = useNavigation();
@@ -16,9 +17,15 @@ const FormJoya = () => {
         precioInicial: '',
         precioFinal: '',
         provedor: '',
-        id: '',
         imageUrl: '', // Campo para la URL de la imagen subida
     });
+    
+    const movent = {
+        id_producto: jewel.cod_Product,
+        tipo_movimiento: 'Add',
+        info_movimiento: new Date().toISOString()
+      };
+
 
     const [imageUri, setImageUri] = useState(null); // Imagen seleccionada localmente
 
@@ -72,7 +79,7 @@ const FormJoya = () => {
             // Enviar datos del producto
             const response = await postProduct(jewelWithImage);
             console.log('Producto agregado:', response);
-
+            const res = await postMotion(movent);
             Alert.alert('Éxito', 'Producto agregado correctamente.');
             navigation.goBack();
         } catch (error) {
@@ -142,6 +149,9 @@ const FormJoya = () => {
 
                 {/* Botón para agregar producto */}
                 <Button title="Agregar Producto" onPress={handleSubmit} />
+
+                {/*Boton para eliminar producto */}
+                <Button color={red} title="Eliminar Producto" onPress={deleteProduct} />
             </View>
         </ScrollView>
     );
