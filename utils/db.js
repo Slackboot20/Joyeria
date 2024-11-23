@@ -2,7 +2,7 @@
 import { Alert } from 'react-native';
 import axios from 'axios';
 
-BACKEND_URL = 'https://joyeria-5db71-default-rtdb.firebaseio.com/';
+BACKEND_URL = 'https://jeweler-a97c3-default-rtdb.firebaseio.com/';
 
 const postMotion = async (newmotion) => {
     try {
