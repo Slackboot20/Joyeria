@@ -15,7 +15,6 @@ const postMotion = async (newmotion) => {
 }
 
 const getMotion = async () => {
-    try {
         const response = await axios.get(`${BACKEND_URL}` + `motion.json`)
 
         const motions = [];
@@ -31,9 +30,6 @@ const getMotion = async () => {
         }
         console.log('Search Motions');
         return motions;
-    } catch(error){
-        console.log('Error al mostrar los movimientos', error);
-    }
 };
 
 const getProducts = async () => {
@@ -108,9 +104,7 @@ const deleteProduct = async (id) => {
 const updateData = async (data, id) => {
     try {
         const url = `${BACKEND_URL}` + `jewel/${id}.json`;
-        console.log("URL de la petición:", url);
         const res = await axios.patch(url, data);
-        console.log("Respuesta de Firebase:", res);
         return res.data;
     } catch (error) {
         console.error("Error al modificar producto", error);
@@ -118,4 +112,4 @@ const updateData = async (data, id) => {
     }
 };
 
-export { getProducts, getProductById, postProduct, updateData, postMotion, deleteProduct };
+export { getProducts, getProductById, postProduct, updateData, postMotion, deleteProduct, getMotion};

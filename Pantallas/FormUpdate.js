@@ -79,7 +79,7 @@ const FormUpdate = ({ route }) => {
             const updatedJewel = { ...jewel, imageUrl: updatedImageUrl };
 
             const response = await updateData(updatedJewel, id);
-            console.log('Producto actualizado:', response);
+            console.log('Producto actualizado:');
             const res = await postMotion(movent);
             Alert.alert('Éxito', 'Producto actualizado correctamente.');
             navigation.goBack();
