@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, Alert, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Importa íconos de Material Icons
 import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
-import { postProduct, postMotion, deleteProduct } from '../utils/db';
+import { postProduct, postMotion } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
-import { red } from '@cloudinary/url-gen/actions/adjust';
 
 const FormJoya = () => {
     const navigation = useNavigation();
@@ -19,13 +19,12 @@ const FormJoya = () => {
         provedor: '',
         imageUrl: '', // Campo para la URL de la imagen subida
     });
-    
+
     const movent = {
         id_producto: jewel.cod_Product,
         tipo_movimiento: 'Add',
-        info_movimiento: new Date().toISOString()
-      };
-
+        info_movimiento: new Date().toISOString(),
+    };
 
     const [imageUri, setImageUri] = useState(null); // Imagen seleccionada localmente
 
@@ -39,7 +38,6 @@ const FormJoya = () => {
         getPermissions();
     }, []);
 
-    // Manejar cambios en los campos de texto
     const handleChange = (name, value) => {
         setJewel({
             ...jewel,
@@ -47,7 +45,6 @@ const FormJoya = () => {
         });
     };
 
-    // Seleccionar imagen desde la galería
     const selectImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -57,33 +54,28 @@ const FormJoya = () => {
             if (result.assets && result.assets.length > 0) {
                 const selectedImage = result.assets[0];
                 setImageUri(selectedImage.uri); // Guardar la URI de la imagen seleccionada
+                Alert.alert('Imagen seleccionada', 'La imagen será subida al agregar el producto.');
             }
         } catch (error) {
             Alert.alert('Error', 'Hubo un problema al seleccionar la imagen.');
         }
     };
 
-    // Enviar formulario
     const handleSubmit = async () => {
         try {
             let imageUrl = jewel.imageUrl;
 
-            // Subir imagen si hay una seleccionada
             if (imageUri) {
                 imageUrl = await uploadImageToCloudinary(imageUri);
             }
 
-            // Actualizar el estado de la joya con la URL de la imagen
             const jewelWithImage = { ...jewel, imageUrl };
 
-            // Enviar datos del producto
-            const response = await postProduct(jewelWithImage);
-            console.log('Producto agregado:', response);
-            const res = await postMotion(movent);
+            await postProduct(jewelWithImage);
+            await postMotion(movent);
             Alert.alert('Éxito', 'Producto agregado correctamente.');
             navigation.goBack();
         } catch (error) {
-            console.error('Error al agregar el producto:', error);
             Alert.alert('Error', 'Hubo un problema al agregar el producto.');
         }
     };
@@ -144,14 +136,16 @@ const FormJoya = () => {
                     placeholder="Proveedor"
                 />
 
-                {/* Botón para seleccionar imagen */}
-                <Button title="Seleccionar Imagen" onPress={selectImage} />
+                <Text style={styles.label}>Imagen de la joya: </Text>
+                <TouchableOpacity style={styles.imageButton} onPress={selectImage}>
+                    <Icon name="photo-library" size={20} color="#fff" />
+                    <Text style={styles.imageButtonText}>Seleccionar Imagen</Text>
+                </TouchableOpacity>
 
                 {/* Botón para agregar producto */}
-                <Button title="Agregar Producto" onPress={handleSubmit} />
-
-                {/*Boton para eliminar producto */}
-                <Button color={red} title="Eliminar Producto" onPress={deleteProduct} />
+                <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+                    <Text style={styles.submitButtonText}>Agregar Producto</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -177,6 +171,29 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         paddingHorizontal: 10,
         borderRadius: 5,
+    },
+    imageButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 15,
+    },
+    imageButtonText: {
+        color: '#fff',
+        marginLeft: 10,
+        fontSize: 16,
+    },
+    submitButton: {
+        backgroundColor: '#4CAF50',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    submitButtonText: {
+        color: '#fff',
+        fontSize: 16,
     },
 });
 

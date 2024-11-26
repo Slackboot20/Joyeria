@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { postMotion, updateData } from '../utils/db';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Importa íconos de Material Icons
+import { postMotion, updateData, deleteProduct } from '../utils/db';
 import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
 import { useNavigation } from '@react-navigation/native';
 
@@ -23,13 +24,12 @@ const FormUpdate = ({ route }) => {
     const movent = {
         id_producto: jewel.codigo_Product,
         tipo_movimiento: 'Update',
-        info_movimiento: new Date().toISOString()
+        info_movimiento: new Date().toISOString(),
     };
 
     const [newImageUri, setNewImageUri] = useState(null); // Imagen seleccionada localmente
 
     useEffect(() => {
-        // Asigna los valores de route.params al estado
         setJewel({
             codigo_Product: codigo_Product || '',
             peso: peso || '',
@@ -49,7 +49,6 @@ const FormUpdate = ({ route }) => {
         });
     };
 
-    // Seleccionar una nueva imagen
     const selectImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -58,7 +57,7 @@ const FormUpdate = ({ route }) => {
             });
             if (result.assets && result.assets.length > 0) {
                 const selectedImage = result.assets[0];
-                setNewImageUri(selectedImage.uri); // Guardar la URI de la imagen seleccionada
+                setNewImageUri(selectedImage.uri);
                 Alert.alert('Imagen seleccionada', 'La imagen será subida al actualizar el producto.');
             }
         } catch (error) {
@@ -69,22 +68,15 @@ const FormUpdate = ({ route }) => {
     const handleSubmit = async () => {
         try {
             let updatedImageUrl = jewel.imageUrl;
-
-            // Subir nueva imagen si se selecciona una
             if (newImageUri) {
                 updatedImageUrl = await uploadImageToCloudinary(newImageUri);
             }
-
-            // Actualizar datos incluyendo la URL de la imagen
             const updatedJewel = { ...jewel, imageUrl: updatedImageUrl };
-
-            const response = await updateData(updatedJewel, id);
-            console.log('Producto actualizado:');
-            const res = await postMotion(movent);
+            await updateData(updatedJewel, id);
+            await postMotion(movent);
             Alert.alert('Éxito', 'Producto actualizado correctamente.');
             navigation.goBack();
         } catch (error) {
-            console.error('Error al actualizar el producto:', error);
             Alert.alert('Error', 'Hubo un problema al actualizar el producto.');
         }
     };
@@ -97,7 +89,7 @@ const FormUpdate = ({ route }) => {
                 value={jewel.codigo_Product}
                 onChangeText={(value) => handleChange('codigo_Product', value)}
                 placeholder="Código"
-                editable={false} // Desactivado si no quieres que el código se modifique
+                editable={false}
             />
             <Text style={styles.label}>Peso:</Text>
             <TextInput
@@ -145,11 +137,16 @@ const FormUpdate = ({ route }) => {
                 placeholder="Proveedor"
             />
 
-            {/* Botón para seleccionar una nueva imagen */}
-            <Button title="Seleccionar Nueva Imagen" onPress={selectImage} />
+            <Text style = {styles.label}>Imagen: </Text>
+            <TouchableOpacity style={styles.imageButton} onPress={selectImage}>
+                <Icon name="photo-library" size={20} color="#fff" />
+                <Text style={styles.imageButtonText}>Seleccionar Nueva Imagen</Text>
+            </TouchableOpacity>
 
-            {/* Botón para actualizar producto */}
-            <Button title="Actualizar Producto" onPress={handleSubmit} />
+            <View style={styles.buttonContainer}>
+                <Button title="Actualizar Producto" onPress={handleSubmit} color="#4CAF50" />
+                <Button title="Eliminar Producto" onPress={deleteProduct} color="red" />
+            </View>
         </View>
     );
 };
@@ -169,6 +166,24 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         paddingHorizontal: 10,
         borderRadius: 5,
+    },
+    imageButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 15,
+    },
+    imageButtonText: {
+        color: '#fff',
+        marginLeft: 10,
+        fontSize: 16,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
     },
 });
 
