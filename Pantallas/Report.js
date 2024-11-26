@@ -6,7 +6,7 @@ import React, { useState, useEffect, useCallback} from 'react';
 
 
 const Report = () => {
-    const [FetchedMotions, setFetchedMotions] = useState([]);
+    const [fetchedMotions, setFetchedMotions] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -45,12 +45,12 @@ const Report = () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> 
                 } 
             > 
-                {FetchedMotions.length === 0 ? (
+                {fetchedMotions.length === 0 ? (
                     <Text>
                         No hay movimientos
                     </Text>
                 ) : (
-                    FetchedMotions.map((motion, index) => (
+                    fetchedMotions.map((motion, index) => (
                         <TouchableOpacity
                             key={index}
                     >

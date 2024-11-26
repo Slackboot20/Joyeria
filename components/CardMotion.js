@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
-const CardMotion = ({id_producto, info_movimeinto, tipo_movimiento}) => {
+const CardMotion = ({id_producto, info_movimiento, tipo_movimiento}) => {
 
   return ( 
     <SafeAreaView>
@@ -11,7 +11,7 @@ const CardMotion = ({id_producto, info_movimeinto, tipo_movimiento}) => {
           <Text >{id_producto}</Text>
 
           {/* Description */}
-          <Text style={styles.description}>{info_movimeinto}</Text>
+          <Text style={styles.description}>{info_movimiento}</Text>
 
           {/* Movimiento Category */}
           <Text style={styles.category}>{tipo_movimiento}</Text>

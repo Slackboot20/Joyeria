@@ -15,22 +15,33 @@ const postMotion = async (newmotion) => {
 }
 
 const getMotion = async () => {
-        const response = await axios.get(`${BACKEND_URL}` + `motion.json`)
-
+    try {
+        const response = await axios.get(`${BACKEND_URL}/motion.json`);
         const motions = [];
-
-        for(const key in response.data){
+        
+        if (!response.data) {
+            console.error('No data received from backend');
+            return motions;
+        }
+        
+        for (const key in response.data) {
             const motion = {
                 id: key,
-                id_producto: response.data[key].id_producto,
-                tipo_movimiento: response.data[key].tipo_movimiento,
-                info_movimiento: response.data[key].info_movimiento,
+                id_producto: response.data[key]?.id_producto || null,
+                tipo_movimiento: response.data[key]?.tipo_movimiento || null,
+                info_movimiento: response.data[key]?.info_movimiento || null,
             };
             motions.push(motion);
         }
+
         console.log('Search Motions');
         return motions;
+    } catch (error) {
+        console.error('Error fetching motions:', error.message);
+        return [];
+    }
 };
+
 
 const getProducts = async () => {
     const response = await axios.get(`${BACKEND_URL}` + 'jewel.json');
