@@ -1,37 +1,68 @@
-import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, SafeAreaView, RefreshControl } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, RefreshControl, Animated } from 'react-native';
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Joyas = () => {
     const navigation = useNavigation();
     const [fetchedProducts, setFetchedProduct] = useState([]);
-    const [loading, setLoading] = useState(true); // Estado de carga
+    const [loading, setLoading] = useState(true); // Estado de carga inicial
     const [refreshing, setRefreshing] = useState(false); // Estado para controlar el refresco manual
+    const [rotateAnim] = useState(new Animated.Value(0)); // Valor inicial para la animación de rotación
 
+    // Función para obtener los productos con un retraso simulado
     const fetchProducts = async () => {
-        setLoading(true);
-        const jewels = await getProducts();
-        setFetchedProduct(jewels);
-        setLoading(false);
+        setLoading(true); // Solo se activa al cargar los datos iniciales
+        try {
+            // Simulando una carga de 3 segundos
+            setTimeout(async () => {
+                const jewels = await getProducts();
+                setFetchedProduct(jewels);
+                setLoading(false); // Termina la carga después de 3 segundos
+            }, 1); // Retraso de 3 segundos
+        } catch (error) {
+            console.error(error);
+            setLoading(false); // Termina la carga incluso si ocurre un error
+        }
     };
 
     useEffect(() => {
-        fetchProducts();
+        fetchProducts(); // Carga inicial
     }, []);
 
+    useEffect(() => {
+        // Animación de rotación para el ícono
+        Animated.loop(
+            Animated.timing(rotateAnim, {
+                toValue: 1,
+                duration: 1500,
+                useNativeDriver: true,
+            })
+        ).start();
+    }, [rotateAnim]);
+
+    // Función para manejar el refresco manual
     const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        await fetchProducts();
-        setRefreshing(false);
+        setRefreshing(true); // Inicia el refresco
+        await fetchProducts(); // Vuelve a cargar los productos
+        setRefreshing(false); // Termina el refresco
     }, []);
 
     if (loading) {
+        const rotateInterpolate = rotateAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '360deg'],
+        });
+
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#0000ff" />
-                <Text>Loading joyas...</Text>
+                <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
+                    {/* Usa un ícono en lugar de una imagen */}
+                    <Icon name="gem" size={60} color="black" />
+                </Animated.View>
+                <Text style={styles.loadingText}>Loading joyas...</Text>
             </View>
         );
     }
@@ -59,7 +90,7 @@ const Joyas = () => {
                                     precioFinal: jewel.precioFinal,
                                     peso: jewel.peso,
                                     provedor: jewel.provedor,
-                                    imageUrl: jewel.imageUrl, // Asegúrate de que este campo exista en tu base de datos
+                                    imageUrl: jewel.imageUrl,
                                 })
                             }
                         >
@@ -81,14 +112,19 @@ export default Joyas;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 16, // Márgenes a los lados (izquierda y derecha)
-        marginVertical: 40, // Márgenes en la parte superior e inferior
-        padding: 10, // Opcional: Espaciado interior para el contenido
-        backgroundColor: '#f0f0f0', // Color de fondo opcional
+        marginHorizontal: 16,
+        marginVertical: 40,
+        padding: 10,
+        backgroundColor: '#f0f0f0',
     },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
     },
 });
