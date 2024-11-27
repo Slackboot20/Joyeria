@@ -5,7 +5,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';  // Para usar el ícono de la gema
 
 const Report = () => {
-    const [FetchedMotions, setFetchedMotions] = useState([]);
+    const [fetchedMotions, setFetchedMotions] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true); // Estado de carga inicial
     const [rotateAnim] = useState(new Animated.Value(0)); // Valor inicial para la animación de rotación
@@ -59,22 +59,28 @@ const Report = () => {
         <SafeAreaView style={styles.container}>
             <ScrollView 
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            >
-                {FetchedMotions.length === 0 ? (
-                    <Text>No hay movimientos</Text>
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> 
+                } 
+            > 
+                {fetchedMotions.length === 0 ? (
+                    <Text>
+                        No hay movimientos
+                    </Text>
                 ) : (
                     FetchedMotions.map((motion, index) => (
-                        <TouchableOpacity key={index}>
-                            <CardMotion
-                                id_producto={motion.id_producto}
-                                info_movimiento={motion.info_movimiento}
-                                tipo_movimiento={motion.tipo_movimiento}
-                            />
-                        </TouchableOpacity>
-                    ))
-                )}
+                        <TouchableOpacity
+                            key={index}
+                    >
+                        <CardMotion
+                            id_producto={motion.id_producto}
+                            info_movimiento={motion.info_movimiento}
+                            tipo_movimiento={motion.tipo_movimiento}
+                        />
+                    
+                    </TouchableOpacity>
+                ))
+            )}
+
             </ScrollView>
         </SafeAreaView>
     );
