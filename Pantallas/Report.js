@@ -1,6 +1,6 @@
 import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, RefreshControl, Animated } from 'react-native';
 import { getMotion } from '../utils/db';
-import CardMotion from '../components/CardJewelry';
+import CardMotion from '../components/CardMotion';
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';  // Para usar el ícono de la gema
 

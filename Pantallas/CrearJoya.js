@@ -55,7 +55,7 @@ export default function CrearJoya() {
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
-                <Text style={styles.loadingText}>Loading joyas...</Text>
+                <Text style={styles.loadingText}>Loading jewels...</Text>
             </View>
         );
     }

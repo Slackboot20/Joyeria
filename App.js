@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import InicializerApp from './Pantallas/InicializerApp';
 import TabsNavigations from './navigations/TabsNavigations';
 import FormJoya from './Pantallas/FormJoya';
-import FormMovemt from './Pantallas/FormMovemt';
 import { AuthContext } from './context/auth-context';
 import AuthContextProvider from "./context/auth-context";
 import JewelryDetail from './Pantallas/JewelryDetail';
@@ -29,15 +28,6 @@ const AppNavigator = () => {
         <Stack.Screen
           name="FormJoya"
           component={FormJoya}
-          options={{
-            title: 'Volver', // Cambia el texto del encabezado
-            headerTintColor: '#FFFFFF', // Cambia el color del texto del header
-            headerStyle: { backgroundColor: 'peru' }, // Cambia el color de fondo del header
-          }}
-        />
-        <Stack.Screen
-          name="FormMovemt"
-          component={FormMovemt}
           options={{
             title: 'Volver', // Cambia el texto del encabezado
             headerTintColor: '#FFFFFF', // Cambia el color del texto del header

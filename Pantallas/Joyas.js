@@ -21,7 +21,7 @@ const Joyas = () => {
                 const jewels = await getProducts();
                 setFetchedProduct(jewels);
                 setLoading(false); // Termina la carga después de 3 segundos
-            }, 1); // Retraso de 3 segundos
+            }, 3000); // Retraso de 3 segundos
         } catch (error) {
             console.error(error);
             setLoading(false); // Termina la carga incluso si ocurre un error
