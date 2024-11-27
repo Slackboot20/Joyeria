@@ -67,7 +67,7 @@ const Report = () => {
                         No hay movimientos
                     </Text>
                 ) : (
-                    FetchedMotions.map((motion, index) => (
+                    fetchedMotions.map((motion, index) => (
                         <TouchableOpacity
                             key={index}
                     >
