@@ -2,13 +2,13 @@ import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, Ref
 import { getmovements } from '../utils/db';
 import CardMovements from '../components/CardMovements';
 import React, { useState, useEffect, useCallback } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';  // Para usar el ícono de la gema
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Report = () => {
     const [fetchedmovements, setFetchedmovements] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true); // Estado de carga inicial
-    const [rotateAnim] = useState(new Animated.Value(0)); // Valor inicial para la animación de rotación
+    const [loading, setLoading] = useState(true);
+    const [rotateAnim] = useState(new Animated.Value(0));
 
     const fetchmovements = async () => {
         setLoading(true);
@@ -21,8 +21,7 @@ const Report = () => {
         fetchmovements();
     }, []);
 
-    useEffect(() => {
-        // Animación de rotación para el ícono
+    const startRotation = () => {
         Animated.loop(
             Animated.timing(rotateAnim, {
                 toValue: 1,
@@ -30,7 +29,20 @@ const Report = () => {
                 useNativeDriver: true,
             })
         ).start();
-    }, [rotateAnim]);
+    };
+
+    const stopRotation = () => {
+        rotateAnim.stopAnimation();
+        rotateAnim.setValue(0);
+    };
+
+    useEffect(() => {
+        if (loading || refreshing) {
+            startRotation();
+        } else {
+            stopRotation();
+        }
+    }, [loading, refreshing]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
@@ -38,43 +50,42 @@ const Report = () => {
         setRefreshing(false);
     }, []);
 
-    if (loading) {
-        const rotateInterpolate = rotateAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg'],
-        });
+    const rotateInterpolate = rotateAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
 
+    if (loading) {
         return (
             <View style={styles.loadingContainer}>
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
-                    {/* Usa un ícono en lugar del ActivityIndicator */}
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
-                <Text> Loading movements...</Text>
+                <Text>Loading motions...</Text>
             </View>
         );
-    };
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView 
+            <ScrollView
                 refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> 
                 } 
             > 
-                {fetchedmovements.length === 0 ? (
+                {fetchedMotions.length === 0 ? (
                     <Text>
                         No hay movimientos
                     </Text>
                 ) : (
-                    fetchedmovements.map((movement, index) => (
+                    fetchedMotions.map((motion, index) => (
                         <TouchableOpacity
                             key={index}
                     >
-                        <CardMovements
-                            id_producto={movement.id_producto}
-                            info_movimiento={movement.info_movimiento}
-                            tipo_movimiento={movement.tipo_movimiento}
+                        <CardMotion
+                            id_producto={motion.id_producto}
+                            info_movimiento={motion.info_movimiento}
+                            tipo_movimiento={motion.tipo_movimiento}
                         />
                     
                     </TouchableOpacity>
@@ -104,6 +115,11 @@ const styles = StyleSheet.create({
     loadingText: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#0000ff',
+        color: 'black',
+    },
+    iconContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
 });

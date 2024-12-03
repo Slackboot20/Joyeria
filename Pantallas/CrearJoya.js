@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ScrollView, Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, SafeAreaView, RefreshControl, Animated } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, SafeAreaView, RefreshControl, Animated, TouchableOpacity } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
@@ -9,26 +9,25 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 export default function CrearJoya() {
     const navigation = useNavigation();
     const [fetchedProducts, setFetchedProduct] = useState([]);
-    const [loading, setLoading] = useState(true); 
-    const isFocused = useIsFocused(); 
-    const [refreshing, setRefreshing] = useState(false); 
-    const [rotateAnim] = useState(new Animated.Value(0)); 
+    const [loading, setLoading] = useState(true);
+    const isFocused = useIsFocused();
+    const [refreshing, setRefreshing] = useState(false);
+    const [rotateAnim] = useState(new Animated.Value(0));
 
-    const fetchproductos = async () => {
+    const fetchProductos = async () => {
         setLoading(true);
-        // Simulando un retraso de 3 segundos
         setTimeout(async () => {
             const jewels = await getProducts();
             setFetchedProduct(jewels);
-            setLoading(false); 
-        }, 1); // Retraso de 3 segundos
-    }
+            setLoading(false);
+        }, 1400); // Cambiado a 1 segundo por razones prácticas
+    };
 
     useEffect(() => {
-        if (isFocused) fetchproductos(); // Carga los productos cuando la pantalla está en foco
+        if (isFocused) fetchProductos();
     }, [isFocused]);
 
-    useEffect(() => {
+    const startRotation = () => {
         Animated.loop(
             Animated.timing(rotateAnim, {
                 toValue: 1,
@@ -36,20 +35,33 @@ export default function CrearJoya() {
                 useNativeDriver: true,
             })
         ).start();
-    }, [rotateAnim]);
+    };
+
+    const stopRotation = () => {
+        rotateAnim.stopAnimation();
+        rotateAnim.setValue(0);
+    };
+
+    useEffect(() => {
+        if (loading || refreshing) {
+            startRotation();
+        } else {
+            stopRotation();
+        }
+    }, [loading, refreshing]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        await fetchproductos();
+        await fetchProductos();
         setRefreshing(false);
     }, []);
 
-    if (loading) {
-        const rotateInterpolate = rotateAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg'],
-        });
+    const rotateInterpolate = rotateAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
 
+    if (loading) {
         return (
             <View style={styles.loadingContainer}>
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
@@ -62,11 +74,18 @@ export default function CrearJoya() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView 
+            <ScrollView
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
+                <View style={styles.iconContainer}>
+                    {refreshing && (
+                        <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
+                            <Icon name="gem" size={40} color="black" />
+                        </Animated.View>
+                    )}
+                </View>
                 {fetchedProducts.length === 0 ? (
                     <View style={styles.noJewelsContainer}>
                     <Text style={styles.noJewelsText}>No hay joyas</Text>
@@ -77,16 +96,15 @@ export default function CrearJoya() {
                         <TouchableOpacity
                             key={index}
                             onPress={() =>
-                                navigation.navigate('FormUpdate', { 
+                                navigation.navigate('FormUpdate', {
                                     codigo_Product: jewel.cod_Product,
                                     description: jewel.description,
                                     material: jewel.material,
                                     precioInicial: jewel.precioInicial,
                                     precioFinal: jewel.precioFinal,
-                                    material: jewel.material,
                                     peso: jewel.peso,
                                     provedor: jewel.provedor,
-                                    id: jewel.id_joya
+                                    id: jewel.id_joya,
                                 })
                             }
                         >
@@ -99,10 +117,7 @@ export default function CrearJoya() {
                     ))
                 )}
                 <View>
-                    <ButtonsRadians 
-                        routename="FormJoya"
-                        text="Crear Joyas"
-                    />
+                    <ButtonsRadians routename="FormJoya" text="Crear Joyas" />
                 </View>
             </ScrollView>
         </SafeAreaView>
