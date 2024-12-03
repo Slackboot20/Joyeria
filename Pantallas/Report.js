@@ -2,27 +2,28 @@ import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, Ref
 import { getMotion } from '../utils/db';
 import CardMotion from '../components/CardMotion';
 import React, { useState, useEffect, useCallback } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';  // Para usar el ícono de la gema
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Report = () => {
     const [fetchedMotions, setFetchedMotions] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true); // Estado de carga inicial
-    const [rotateAnim] = useState(new Animated.Value(0)); // Valor inicial para la animación de rotación
+    const [loading, setLoading] = useState(true);
+    const [rotateAnim] = useState(new Animated.Value(0));
 
     const fetchMotions = async () => {
         setLoading(true);
-        const motions = await getMotion();
-        setFetchedMotions(motions);
-        setLoading(false);
+        setTimeout(async () => {
+            const motions = await getMotion();
+            setFetchedMotions(motions);
+            setLoading(false);
+        }, 1400);
     };
 
     useEffect(() => {
         fetchMotions();
     }, []);
 
-    useEffect(() => {
-        // Animación de rotación para el ícono
+    const startRotation = () => {
         Animated.loop(
             Animated.timing(rotateAnim, {
                 toValue: 1,
@@ -30,7 +31,20 @@ const Report = () => {
                 useNativeDriver: true,
             })
         ).start();
-    }, [rotateAnim]);
+    };
+
+    const stopRotation = () => {
+        rotateAnim.stopAnimation();
+        rotateAnim.setValue(0);
+    };
+
+    useEffect(() => {
+        if (loading || refreshing) {
+            startRotation();
+        } else {
+            stopRotation();
+        }
+    }, [loading, refreshing]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
@@ -38,49 +52,49 @@ const Report = () => {
         setRefreshing(false);
     }, []);
 
-    if (loading) {
-        const rotateInterpolate = rotateAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg'],
-        });
+    const rotateInterpolate = rotateAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
 
+    if (loading) {
         return (
             <View style={styles.loadingContainer}>
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
-                    {/* Usa un ícono en lugar del ActivityIndicator */}
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
-                <Text>Loading motions...</Text>
+                <Text style={styles.loadingText}>Loading motions...</Text>
             </View>
         );
-    };
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView 
+            <ScrollView
                 refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> 
-                } 
-            > 
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
+                <View style={styles.iconContainer}>
+                    {refreshing && (
+                        <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
+                            <Icon name="gem" size={40} color="black" />
+                        </Animated.View>
+                    )}
+                </View>
                 {fetchedMotions.length === 0 ? (
-                    <Text>
-                        No hay movimientos
-                    </Text>
+                    <Text>No hay movimientos</Text>
                 ) : (
                     fetchedMotions.map((motion, index) => (
-                        <TouchableOpacity
-                            key={index}
-                    >
-                        <CardMotion
-                            id_producto={motion.id_producto}
-                            info_movimiento={motion.info_movimiento}
-                            tipo_movimiento={motion.tipo_movimiento}
-                        />
-                    
-                    </TouchableOpacity>
-                ))
-            )}
-
+                        <TouchableOpacity key={index}>
+                            <CardMotion
+                                id_producto={motion.id_producto}
+                                info_movimiento={motion.info_movimiento}
+                                tipo_movimiento={motion.tipo_movimiento}
+                            />
+                        </TouchableOpacity>
+                    ))
+                )}
             </ScrollView>
         </SafeAreaView>
     );
@@ -104,6 +118,11 @@ const styles = StyleSheet.create({
     loadingText: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#0000ff',
+        color: 'black',
+    },
+    iconContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
 });

@@ -1,39 +1,36 @@
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, RefreshControl, Animated } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, useCallback } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Joyas = () => {
     const navigation = useNavigation();
     const [fetchedProducts, setFetchedProduct] = useState([]);
-    const [loading, setLoading] = useState(true); // Estado de carga inicial
-    const [refreshing, setRefreshing] = useState(false); // Estado para controlar el refresco manual
-    const [rotateAnim] = useState(new Animated.Value(0)); // Valor inicial para la animación de rotación
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    const [rotateAnim] = useState(new Animated.Value(0));
 
-    // Función para obtener los productos con un retraso simulado
     const fetchProducts = async () => {
-        setLoading(true); // Solo se activa al cargar los datos iniciales
+        setLoading(true);
         try {
-            // Simulando una carga de 3 segundos
             setTimeout(async () => {
                 const jewels = await getProducts();
                 setFetchedProduct(jewels);
-                setLoading(false); // Termina la carga después de 3 segundos
-            }, 3000); // Retraso de 3 segundos
+                setLoading(false);
+            }, 1400);
         } catch (error) {
             console.error(error);
-            setLoading(false); // Termina la carga incluso si ocurre un error
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchProducts(); // Carga inicial
+        fetchProducts();
     }, []);
 
-    useEffect(() => {
-        // Animación de rotación para el ícono
+    const startRotation = () => {
         Animated.loop(
             Animated.timing(rotateAnim, {
                 toValue: 1,
@@ -41,25 +38,36 @@ const Joyas = () => {
                 useNativeDriver: true,
             })
         ).start();
-    }, [rotateAnim]);
+    };
 
-    // Función para manejar el refresco manual
+    const stopRotation = () => {
+        rotateAnim.stopAnimation();
+        rotateAnim.setValue(0); // Restablece el valor para evitar saltos
+    };
+
+    useEffect(() => {
+        if (refreshing || loading) {
+            startRotation();
+        } else {
+            stopRotation();
+        }
+    }, [refreshing, loading]);
+
     const onRefresh = useCallback(async () => {
-        setRefreshing(true); // Inicia el refresco
-        await fetchProducts(); // Vuelve a cargar los productos
-        setRefreshing(false); // Termina el refresco
+        setRefreshing(true);
+        await fetchProducts();
+        setRefreshing(false);
     }, []);
 
-    if (loading) {
-        const rotateInterpolate = rotateAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg'],
-        });
+    const rotateInterpolate = rotateAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
 
+    if (loading) {
         return (
             <View style={styles.loadingContainer}>
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
-                    {/* Usa un ícono en lugar de una imagen */}
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
                 <Text style={styles.loadingText}>Loading joyas...</Text>
@@ -74,6 +82,13 @@ const Joyas = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
+                <View style={styles.iconContainer}>
+                    {refreshing && (
+                        <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
+                            <Icon name="gem" size={40} color="black" />
+                        </Animated.View>
+                    )}
+                </View>
                 {fetchedProducts.length === 0 ? (
                     <Text>No hay joyas</Text>
                 ) : (
@@ -126,5 +141,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: 'black',
+    },
+    iconContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
 });
