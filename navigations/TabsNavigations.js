@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { Text, StyleSheet, Animated } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Joyas from '../Pantallas/Joyas';
-import CrearJoya from '../Pantallas/CrearJoya';
+import Jewel from '../Pantallas/Jewel';
+import CreateJewel from '../Pantallas/CreateJewel';
 import Profile from '../Pantallas/Profile';
 import Report from '../Pantallas/Report';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -12,17 +12,21 @@ const Tab = createBottomTabNavigator();
 const TabsNavigations = () => {
   // Animated values to track the focused state of each tab
   const animationValues = {
-    Joyas: useRef(new Animated.Value(0)).current,
+    Jewel: useRef(new Animated.Value(0)).current,
     'Crear Joya': useRef(new Animated.Value(0)).current,
     Movimiento: useRef(new Animated.Value(0)).current,
     Perfil: useRef(new Animated.Value(0)).current,
   };
 
   const animateTab = (routeName, focused) => {
-    Animated.spring(animationValues[routeName], {
-      toValue: focused ? 1 : 0,
-      useNativeDriver: true, // Compatible con transform
-    }).start();
+    // Ensure the animation value exists before calling animate
+    const animationValue = animationValues[routeName];
+    if (animationValue) {
+      Animated.spring(animationValue, {
+        toValue: focused ? 1 : 0,
+        useNativeDriver: true, // Compatible con transform
+      }).start();
+    }
   };
 
   return (
@@ -31,21 +35,24 @@ const TabsNavigations = () => {
         tabBarIcon: ({ focused, color }) => {
           let iconName;
 
-          if (route.name === 'Perfil') {
+          if (route.name === 'Profile') {
             iconName = 'person';
-          } else if (route.name === 'Joyas') {
+          } else if (route.name === 'Jewel') {
             iconName = 'diamond';
-          } else if (route.name === 'Movimiento') {
+          } else if (route.name === 'Movement') {
             iconName = 'document';
-          } else if (route.name === 'Crear Joya') {
+          } else if (route.name === 'Create Jewel') {
             iconName = 'add-circle';
           }
 
-          // Scale animation based on focus
-          const scale = animationValues[route.name].interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 1.2], // Normal to slightly larger
-          });
+          // Ensure animation value exists and use interpolate safely
+          const animationValue = animationValues[route.name];
+          const scale = animationValue
+            ? animationValue.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 1.2], // Normal to slightly larger
+              })
+            : 1; // Fallback value if animationValue is undefined
 
           return (
             <Animated.View style={{ transform: [{ scale }] }}>
@@ -54,11 +61,14 @@ const TabsNavigations = () => {
           );
         },
         tabBarLabel: ({ focused }) => {
-          // Scale animation for the label
-          const scale = animationValues[route.name].interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 1.1], // Smaller to slightly larger text scale
-          });
+          // Ensure animation value exists and use interpolate safely for label scaling
+          const animationValue = animationValues[route.name];
+          const scale = animationValue
+            ? animationValue.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 1.1], // Smaller to slightly larger text scale
+              })
+            : 1; // Fallback value if animationValue is undefined
 
           return (
             <Animated.Text
@@ -84,10 +94,10 @@ const TabsNavigations = () => {
         blur: () => animateTab(route.name, false),
       })}
     >
-      <Tab.Screen name="Joyas" component={Joyas} options={{ headerShown: false }} />
-      <Tab.Screen name="Crear Joya" component={CrearJoya} options={{ headerShown: false }} />
-      <Tab.Screen name="Movimiento" component={Report} options={{ headerShown: false }} />
-      <Tab.Screen name="Perfil" component={Profile} options={{ headerShown: false }} />
+      <Tab.Screen name="Jewel" component={Jewel} options={{ headerShown: false }} />
+      <Tab.Screen name="Create Jewel" component={CreateJewel} options={{ headerShown: false }} />
+      <Tab.Screen name="Movement" component={Report} options={{ headerShown: false }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 };

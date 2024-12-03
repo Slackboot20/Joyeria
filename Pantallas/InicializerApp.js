@@ -17,7 +17,6 @@ export default function InicializerApp({ navigation }) {
 
     // Función para manejar el login
     async function handleLogin() {
-        console.log('Intentando iniciar sesión con:', email, password);  // Para depuración
         if (!email || !password) {
             Alert.alert('Error', 'Please enter both email and password', [{ text: 'OK' }]);
             return;

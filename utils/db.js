@@ -87,7 +87,7 @@ const getmovements = async () => {
       movements.push(movement);
     }
 
-    console.log('Search movements');
+    console.log('Searching movements');
     return movements;
   } catch (error) {
     console.error('Error fetching movements:', error.message);
@@ -114,7 +114,7 @@ const getProducts = async () => {
     };
     jewels.push(jewel);
   }
-  console.log('Search Products');
+  console.log('Searching Products');
   return jewels;
 };
 

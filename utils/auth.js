@@ -48,7 +48,6 @@ export async function logout() {
 export const login = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("Usuario autenticado presuntamente:", userCredential.user);
     return userCredential.user;  // Devuelve el usuario autenticado
   } catch (error) {
     console.error("Error al iniciar sesión:", error);

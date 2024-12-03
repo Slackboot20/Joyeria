@@ -61,7 +61,7 @@ const Report = () => {
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
-                <Text>Loading motions...</Text>
+                <Text> Loading movements...</Text>
             </View>
         );
     }
@@ -73,19 +73,19 @@ const Report = () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> 
                 } 
             > 
-                {fetchedMotions.length === 0 ? (
+                {fetchedmovements.length === 0 ? (
                     <Text>
                         No hay movimientos
                     </Text>
                 ) : (
-                    fetchedMotions.map((motion, index) => (
+                    fetchedmovements.map((movement, index) => (
                         <TouchableOpacity
                             key={index}
                     >
-                        <CardMotion
-                            id_producto={motion.id_producto}
-                            info_movimiento={motion.info_movimiento}
-                            tipo_movimiento={motion.tipo_movimiento}
+                        <CardMovements
+                            id_producto={movement.id_producto}
+                            info_movimiento={movement.info_movimiento}
+                            tipo_movimiento={movement.tipo_movimiento}
                         />
                     
                     </TouchableOpacity>

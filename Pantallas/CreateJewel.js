@@ -1,34 +1,31 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, RefreshControl, Animated } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { ScrollView, Text, StyleSheet, View, SafeAreaView, RefreshControl, Animated, TouchableOpacity } from 'react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import CardJewelry from '../components/CardJewelry';
 import { getProducts } from '../utils/db';
-import { useNavigation } from '@react-navigation/native';
+import ButtonsRadians from '../components/ButtonsRadians';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const Joyas = () => {
+export default function CreateJewel() {
     const navigation = useNavigation();
     const [fetchedProducts, setFetchedProduct] = useState([]);
     const [loading, setLoading] = useState(true);
+    const isFocused = useIsFocused();
     const [refreshing, setRefreshing] = useState(false);
     const [rotateAnim] = useState(new Animated.Value(0));
 
-    const fetchProducts = async () => {
+    const fetchProductos = async () => {
         setLoading(true);
-        try {
-            setTimeout(async () => {
-                const jewels = await getProducts();
-                setFetchedProduct(jewels);
-                setLoading(false);
-            }, 1400);
-        } catch (error) {
-            console.error(error);
+        setTimeout(async () => {
+            const jewels = await getProducts();
+            setFetchedProduct(jewels);
             setLoading(false);
-        }
+        }, 1400); // Cambiado a 1 segundo por razones prácticas
     };
 
     useEffect(() => {
-        fetchProducts();
-    }, []);
+        if (isFocused) fetchProductos();
+    }, [isFocused]);
 
     const startRotation = () => {
         Animated.loop(
@@ -42,20 +39,20 @@ const Joyas = () => {
 
     const stopRotation = () => {
         rotateAnim.stopAnimation();
-        rotateAnim.setValue(0); // Restablece el valor para evitar saltos
+        rotateAnim.setValue(0);
     };
 
     useEffect(() => {
-        if (refreshing || loading) {
+        if (loading || refreshing) {
             startRotation();
         } else {
             stopRotation();
         }
-    }, [refreshing, loading]);
+    }, [loading, refreshing]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        await fetchProducts();
+        await fetchProductos();
         setRefreshing(false);
     }, []);
 
@@ -70,7 +67,7 @@ const Joyas = () => {
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
-                <Text style={styles.loadingText}>Loading joyas...</Text>
+                <Text style={styles.loadingText}>Loading jewels...</Text>
             </View>
         );
     }
@@ -91,23 +88,23 @@ const Joyas = () => {
                 </View>
                 {fetchedProducts.length === 0 ? (
                     <View style={styles.noJewelsContainer}>
-                        <Text style={styles.noJewelsText}>No hay joyas</Text>
-                    </View>
+                    <Text style={styles.noJewelsText}>No hay joyas</Text>
+                    <Text style={styles.subtext}>Crea una Joya</Text>
+                </View>
                 ) : (
                     fetchedProducts.map((jewel, index) => (
                         <TouchableOpacity
                             key={index}
                             onPress={() =>
-                                navigation.navigate('JewelryDetail', {
+                                navigation.navigate('FormUpdate', {
                                     codigo_Product: jewel.cod_Product,
                                     description: jewel.description,
                                     material: jewel.material,
-                                    id_joya: jewel.id_joya,
                                     precioInicial: jewel.precioInicial,
                                     precioFinal: jewel.precioFinal,
                                     peso: jewel.peso,
                                     provedor: jewel.provedor,
-                                    imageUrl: jewel.imageUrl,
+                                    id: jewel.id_joya,
                                 })
                             }
                         >
@@ -119,12 +116,13 @@ const Joyas = () => {
                         </TouchableOpacity>
                     ))
                 )}
+                <View>
+                    <ButtonsRadians routename="FormJoya" text="Crear Joyas" />
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
-};
-
-export default Joyas;
+}
 
 const styles = StyleSheet.create({
     container: {

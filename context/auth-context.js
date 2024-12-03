@@ -1,4 +1,5 @@
-// AuthContext.js
+import React, { createContext, useState } from 'react'; // Asegúrate de importar createContext y useState desde React
+
 export const AuthContext = createContext({
   token: '',
   isLoggedIn: false,

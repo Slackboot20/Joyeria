@@ -3,7 +3,7 @@ import { View, Text, TextInput, Alert, StyleSheet, ScrollView, TouchableOpacity 
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Importa íconos de Material Icons
 import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
-import { postProduct, postMotion } from '../utils/db';
+import { postProduct, postmovements } from '../utils/db';
 import { useNavigation } from '@react-navigation/native';
 
 const FormJoya = () => {
@@ -72,7 +72,7 @@ const FormJoya = () => {
             const jewelWithImage = { ...jewel, imageUrl };
 
             await postProduct(jewelWithImage);
-            await postMotion(movent);
+            await postmovements(movent);
             Alert.alert('Éxito', 'Producto agregado correctamente.');
             navigation.goBack();
         } catch (error) {
