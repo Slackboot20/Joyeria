@@ -1,82 +1,65 @@
-import axios from "axios";
 import { Alert } from "react-native";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from "./firebase";  // Asegúrate de que 'auth' esté bien configurado en firebase.js
 
-const apiKey = '3dbdbac14d83bbd4fd200207f156f045dc008ca8'; 
-
-
-async function autenticateregister(mode, email, password){
-  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
-
+// Función común para la autenticación (login o registro)
+const authenticate = async (mode, email, password) => {
   try {
-    const response = await axios.post(url, {
-      email: email,
-      password: password,
-      returnSecureToken: true,  // Ensure we get back a token
-    });
-    if(response.status === 200){
-        const token = response.data.idToken;  // extraemos el token de la respuesta
-            return token; 
+    // La instancia de auth ya está definida, no necesitas obtenerla de nuevo
+    const authInstance = getAuth();  // Se obtiene la instancia de autenticación sin necesidad de pasarle 'auth'
+
+    let userCredential;
+    if (mode === 'signUp') {
+      // Registro con Firebase
+      userCredential = await createUserWithEmailAndPassword(authInstance, email, password);
     } else {
-        Alert.alert("Login Failed", "Invalid email or password.");
+      // Login con Firebase
+      userCredential = await signInWithEmailAndPassword(authInstance, email, password);
+    }
+
+    console.log("userCredential:", userCredential);  // Depuración: ver si se obtiene el userCredential correctamente
+
+    if (userCredential && userCredential.user) {
+      const user = userCredential.user;
+      const token = await user.getIdToken(); // Obtener el ID Token de Firebase
+      return token; // Regresamos el token de autenticación
+    } else {
+      throw new Error("Error al obtener las credenciales del usuario");
     }
   } catch (error) {
-    // Si hay un error mostramos una alerta diferente. eso digamos pasaria si el apiKey es incorrecto o si firebase esta caido
-    Alert.alert("Login Error", "An error occurred. Please try again.");
-    console.log(error);
-  } finally {
-    //setIsLoading(false);  // esto es para que se quite el loading en caso de que lo quieran implementar luego
+    console.error("Error en autenticación:", error);
+    Alert.alert("Error de Autenticación", "Ocurrió un error. Intenta nuevamente.");
+    throw error;  // Propagar el error
+  }
+};
+
+// Función de logout
+export async function logout() {
+  try {
+    const authInstance = getAuth();  // Se obtiene la instancia de autenticación sin necesidad de pasarle 'auth'
+    await signOut(authInstance); // Cierra la sesión en Firebase
+  } catch (error) {
+    console.error('Error al cerrar sesión en Firebase:', error);
+    throw new Error('Error al cerrar sesión');
   }
 }
 
-// ya que puede ser que se necesite en otros lugares, se crea una funcion que se pueda reutilizar
-// en todas partes del codigo
-// por ejemplo si quieren hacer la parte de registro, se puede reutilizar esta funcion
-//se crea un signup e inmediateamente se reutiliza el authenticate para registrarlo y logearlo
-async function authenticate(mode, email, password) {
-    // (si quieren aprender mas sobre de donde me saque esto busquen firebase rest api en google)
+// Función de login
+export const login = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("Usuario autenticado presuntamente:", userCredential.user);
+    return userCredential.user;  // Devuelve el usuario autenticado
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    throw new Error("Error al iniciar sesión");
+  }
+};
 
-    // Esta url es la que se necesita para hacer el login
-    // esta url es la misma para todos ustedes
-    // lo que puede cambiar es el apiKey y la parte de signInWithPassword (pero eso luego. ignoren eso por ahora)
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
-    try {
-        // Enviamos una peticion POST a la url de arriba con la ayuda de la libreria axios
-        // axios.post(url, {email: email, password: password, returnSecureToken: true})
-        // el returnSecureToken es para que nos devuelva un token
-        //siempre que se haga un login, se debe de poner returnSecureToken: true
-        const response = await axios.post(url, {
-          email: email,
-          password: password,
-          returnSecureToken: true,  // Ensure we get back a token
-        });
-        if (response.status === 200) { // 200 es el codigo de que todo salio bien. basicamente si el login tiene exito ese va a ser el codigo
-          const token = response.data.idToken;  // extraemos el token de la respuesta
-          return token; // devolvemos el token
-        } else {
-            // si falla el login mostramos una alerta. esto es si el email o password son incorrectos
-          Alert.alert("Login Failed", "Invalid email or password.");
-        }
-      } catch (error) {
-        // Si hay un error mostramos una alerta diferente. eso digamos pasaria si el apiKey es incorrecto o si firebase esta caido
-        Alert.alert("Login Error", "An error occurred. Please try again.");
-        console.log("error");
-      } finally {
-        //setIsLoading(false);  // esto es para que se quite el loading en caso de que lo quieran implementar luego
-      }
-}
-export async function login(email, password) {
-    // llamamos la funcion authenticate con el modo de login y los datos del email y password
-    // como mencione anteriormente, podemos reutilizar esa funcion de autenticate en otros lugares
-    // por ejemplo en el registro
-
-    // al login enviamos el email y el password
-    // la parte de signInWithPassword pueden ignorarla por ahora. pero si les interesa saber digamos podriamos tener diferentes modos de autenticacion
-    return authenticate('signInWithPassword', email, password);
-}
-
-
-export async function register (email, password){
-  //Se llama a la funcion autenticateregister con el metodo register con email y paswaord en donde se va a crear el usuario
-  return autenticateregister(`signUp`, email, password);
-}
-
+// Función de registro
+export const register = async (email, password, setAuthToken) => {
+  const token = await authenticate('signUp', email, password);
+  if (token) {
+    setAuthToken(token);  // Establecer el token en el contexto
+  }
+};

@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
-const CardMotion = ({id_producto, info_movimiento, tipo_movimiento}) => {
+const CardMovements = ({id_producto, info_movimiento, tipo_movimiento}) => {
   return ( 
     <SafeAreaView>
       <View style={styles.card}>
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardMotion;
+export default CardMovements;

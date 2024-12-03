@@ -1,24 +1,24 @@
 import { ScrollView, Text, StyleSheet, View, TouchableOpacity, SafeAreaView, RefreshControl, Animated } from 'react-native';
-import { getMotion } from '../utils/db';
-import CardMotion from '../components/CardMotion';
+import { getmovements } from '../utils/db';
+import CardMovements from '../components/CardMovements';
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';  // Para usar el ícono de la gema
 
 const Report = () => {
-    const [fetchedMotions, setFetchedMotions] = useState([]);
+    const [fetchedmovements, setFetchedmovements] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true); // Estado de carga inicial
     const [rotateAnim] = useState(new Animated.Value(0)); // Valor inicial para la animación de rotación
 
-    const fetchMotions = async () => {
+    const fetchmovements = async () => {
         setLoading(true);
-        const motions = await getMotion();
-        setFetchedMotions(motions);
+        const movement = await getmovements();
+        setFetchedmovements(movement);
         setLoading(false);
     };
 
     useEffect(() => {
-        fetchMotions();
+        fetchmovements();
     }, []);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Report = () => {
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        await fetchMotions();
+        await fetchmovements();
         setRefreshing(false);
     }, []);
 
@@ -50,7 +50,7 @@ const Report = () => {
                     {/* Usa un ícono en lugar del ActivityIndicator */}
                     <Icon name="gem" size={60} color="black" />
                 </Animated.View>
-                <Text>Loading motions...</Text>
+                <Text> Loading movements...</Text>
             </View>
         );
     };
@@ -62,19 +62,19 @@ const Report = () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> 
                 } 
             > 
-                {fetchedMotions.length === 0 ? (
+                {fetchedmovements.length === 0 ? (
                     <Text>
                         No hay movimientos
                     </Text>
                 ) : (
-                    fetchedMotions.map((motion, index) => (
+                    fetchedmovements.map((movement, index) => (
                         <TouchableOpacity
                             key={index}
                     >
-                        <CardMotion
-                            id_producto={motion.id_producto}
-                            info_movimiento={motion.info_movimiento}
-                            tipo_movimiento={motion.tipo_movimiento}
+                        <CardMovements
+                            id_producto={movement.id_producto}
+                            info_movimiento={movement.info_movimiento}
+                            tipo_movimiento={movement.tipo_movimiento}
                         />
                     
                     </TouchableOpacity>

@@ -1,69 +1,56 @@
 import { useState, useContext } from 'react';
-import { View, StyleSheet, ImageBackground, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
-import Buttons from '../components/Buttons';
-import style from '../Styles/style'
-import { login } from '../utils/auth'; // Importar la utilidad de autenticación
-import { AuthContext } from '../context/auth-context'; // importamos el contexto de autenticacion
-import { register } from '../utils/auth';
-
+import { View, StyleSheet, ImageBackground, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { AuthContext } from '../context/auth-context'; // Importa el contexto de autenticación
+import { login, register } from '../utils/auth'; // Importar las funciones de autenticación
 
 export default function InicializerApp({ navigation }) {
-    const [email, setemail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const authCtx = useContext(AuthContext); // Usar el contexto de autenticación. con esta linea carga el contexto de autenticacion
+    const authCtx = useContext(AuthContext); // Usar el contexto de autenticación
+
 
     const [isLogin, setIsLogin] = useState(true);
-    const [emailRegister, setemailRegister] = useState('');
+    const [emailRegister, setEmailRegister] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
 
-    async function handleLogin  ()  {
+    
+
+    // Función para manejar el login
+    async function handleLogin() {
+        console.log('Intentando iniciar sesión con:', email, password);  // Para depuración
         if (!email || !password) {
-            // si no hay email o password mostramos un alerta
             Alert.alert('Error', 'Please enter both email and password', [{ text: 'OK' }]);
             return;
-          }
-      
-          try {
-            const token = await login(email, password); // llamamos la utilidad de autenticacion
-            // si esta autenticacion tiene exito devuelve un token. El que devuelve esto es firebase
-            //el cual le pasamos al contexto
-      
-            authCtx.login(token); // el token se pasa al contexto de autenticacion y lo cargamos con la funcion de login
-            // (por dentro de un setAuthToken(token))
-      
-            navigation.navigate('Tabs'); //si todo sale bien navegamos a la pantalla de MainTabs
-          } catch (error) {
+        }
+        try {
+            const token = await login(email, password);
+            authCtx.login(token);
+            navigation.navigate('Tabs');
+        } catch (error) {
+            console.error('Error al iniciar sesión:', error);
             Alert.alert('Error', 'Login failed. Please try again.');
-          }
+        }
     };
 
-    async function handleRegister  ()  {
+    // Función para manejar el registro
+    async function handleRegister() {
         if (!emailRegister || !registerPassword) {
-            // si no hay email o password mostramos un alerta
             Alert.alert('Error', 'Please enter both email and password', [{ text: 'OK' }]);
             return;
-          }
-      
-          try {
-            const token = await register(emailRegister, registerPassword); // llamamos la utilidad de autenticacion
-            // si esta autenticacion tiene exito devuelve un token. El que devuelve esto es firebase
-            //el cual le pasamos al contexto
-      
-            authCtx.register(token); // el token se pasa al contexto de autenticacion y lo cargamos con la funcion de login
-            // (por dentro de un setAuthToken(token))
-      
-            navigation.navigate('InicializerApp'); //si todo sale bien navegamos a la pantalla de MainTabs
-          } catch (error) {
-            console.error(error)
-            Alert.alert('Error', 'Login failed. Please try again.');
-          }
+        }
 
-    };
+        try {
+            const token = await register(emailRegister, registerPassword); // Llamamos a la función de registro
+            authCtx.register(token); // Si el registro tiene éxito, se guarda el token en el contexto
+            navigation.navigate('Tabs'); // Navegar a la pantalla principal
+        } catch (error) {
+            Alert.alert('Error', 'Registration failed. Please try again.');
+        }
+    }
 
     return (
         <ImageBackground
             source={require('../assets/opcion4.jpeg')}
-            title={styles.title}
             style={styles.background}
             imageStyle={styles.backgroundimage}
         >
@@ -76,7 +63,7 @@ export default function InicializerApp({ navigation }) {
                                 style={styles.input}
                                 placeholder="Nombre de Usuario"
                                 value={email}
-                                onChangeText={setemail}
+                                onChangeText={setEmail}
                             />
                             <TextInput
                                 style={styles.input}
@@ -89,7 +76,7 @@ export default function InicializerApp({ navigation }) {
                                 <Text style={styles.buttonText}>Iniciar Sesión</Text>
                             </TouchableOpacity>
                             <View style={styles.textContainer}>
-                                <Text>No estoy registrado </Text>
+                                <Text> No estoy registrado </Text>
                                 <TouchableOpacity onPress={() => setIsLogin(false)}>
                                     <Text style={styles.linkText}>Regístrate aquí</Text>
                                 </TouchableOpacity>
@@ -102,7 +89,7 @@ export default function InicializerApp({ navigation }) {
                                 style={styles.input}
                                 placeholder="Correo Electronico"
                                 value={emailRegister}
-                                onChangeText={setemailRegister}
+                                onChangeText={setEmailRegister}
                             />
                             <TextInput
                                 style={styles.input}
@@ -124,7 +111,7 @@ export default function InicializerApp({ navigation }) {
                 </View>
             </View>
         </ImageBackground>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

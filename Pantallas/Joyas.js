@@ -75,7 +75,9 @@ const Joyas = () => {
                 }
             >
                 {fetchedProducts.length === 0 ? (
-                    <Text>No hay joyas</Text>
+                    <View style={styles.noJewelsContainer}>
+                        <Text style={styles.noJewelsText}>No hay joyas</Text>
+                    </View>
                 ) : (
                     fetchedProducts.map((jewel, index) => (
                         <TouchableOpacity
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         marginVertical: 40,
         padding: 10,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#f0f0f0', // Fondo suave
     },
     loadingContainer: {
         flex: 1,
@@ -126,5 +128,22 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: 'black',
+    },
+    noJewelsContainer: {
+        flex: 1, // Ocupa toda la pantalla
+        justifyContent: 'center', // Centra el contenido verticalmente
+        alignItems: 'center', // Centra el contenido horizontalmente
+    },
+    noJewelsText: {
+        fontSize: 24, // Tamaño grande para el mensaje
+        fontWeight: 'bold', // Texto en negrita
+        color: '#555', // Color gris oscuro para el texto
+        textAlign: 'center', // Asegura que el texto se alinee al centro
+        marginBottom: 10, // Espacio debajo del mensaje
+    },
+    subtext: {
+        fontSize: 16, // Tamaño de fuente más pequeño para el subtexto
+        color: '#777', // Color gris suave
+        textAlign: 'center', // Centra el texto
     },
 });

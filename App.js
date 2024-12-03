@@ -13,6 +13,13 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const authCtx = useContext(AuthContext);
+
+
+  if (!authCtx) {
+    console.error("AuthContext no está disponible. Asegúrate de que AuthContextProvider envuelva AppNavigator.");
+    return null; // Renderiza nada o una pantalla de error
+  }
+  
   return (
       <Stack.Navigator initialRouteName={authCtx.isLoggedIn ? "Tabs" : "InicializerApp"}>
         <Stack.Screen

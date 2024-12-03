@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Importa íconos de Material Icons
-import { postMotion, updateData, deleteProduct } from '../utils/db';
+import { postmovements, updateData, deleteProduct } from '../utils/db';
 import { uploadImageToCloudinary } from '../utils/uploadImageToCloudinary';
 import { useNavigation } from '@react-navigation/native';
 
@@ -24,6 +24,12 @@ const FormUpdate = ({ route }) => {
     const movent = {
         id_producto: jewel.codigo_Product,
         tipo_movimiento: 'Update',
+        info_movimiento: new Date().toISOString(),
+    };
+
+    const movementDelete = {
+        id_producto: jewel.codigo_Product,
+        tipo_movimiento: 'Delete',
         info_movimiento: new Date().toISOString(),
     };
 
@@ -73,13 +79,29 @@ const FormUpdate = ({ route }) => {
             }
             const updatedJewel = { ...jewel, imageUrl: updatedImageUrl };
             await updateData(updatedJewel, id);
-            await postMotion(movent);
+            await postmovements(movent);
             Alert.alert('Éxito', 'Producto actualizado correctamente.');
             navigation.goBack();
         } catch (error) {
             Alert.alert('Error', 'Hubo un problema al actualizar el producto.');
         }
     };
+
+
+    const handleDelete = async () => {
+        try {
+            console.log("Eliminando producto con ID:" , id)
+            await deleteProduct(id); // Solo se pasa el ID
+            await postmovements(movementDelete);
+            Alert.alert('Producto eliminado', 'El producto se ha eliminado correctamente.');
+            navigation.goBack();
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+            Alert.alert('Error', 'No se pudo eliminar el producto.');
+        }
+    };
+    
+
 
     return (
         <View style={styles.container}>
@@ -145,7 +167,7 @@ const FormUpdate = ({ route }) => {
 
             <View style={styles.buttonContainer}>
                 <Button title="Actualizar Producto" onPress={handleSubmit} color="#4CAF50" />
-                <Button title="Eliminar Producto" onPress={deleteProduct} color="red" />
+                <Button title="Eliminar Producto" onPress={handleDelete} color="red" />
             </View>
         </View>
     );
